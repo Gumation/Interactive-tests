@@ -1,371 +1,1294 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const experience = document.getElementById("experience");
-  const ondeva = document.getElementById("ondeva");
-  const capabilityButtons = [...document.querySelectorAll(".capability")];
-  const agentNode = document.getElementById("agentNode");
-  const agentToggle = document.getElementById("agentToggle");
-  const agentWrap = document.getElementById("agentWrap");
-  const promptText = document.getElementById("promptText");
-  const promptCursor = document.getElementById("promptCursor");
-  const resultCard = document.getElementById("resultCard");
-  const resultTitle = document.getElementById("resultTitle");
-  const resultMessage = document.getElementById("resultMessage");
-  const metricOne = document.getElementById("metricOne");
-  const metricOneValue = document.getElementById("metricOneValue");
-  const metricTwo = document.getElementById("metricTwo");
-  const metricTwoValue = document.getElementById("metricTwoValue");
-  const connections = document.getElementById("connections");
 
-  const requiredElements = [
-    experience,
-    ondeva,
-    agentNode,
-    agentToggle,
-    agentWrap,
-    promptText,
-    promptCursor,
-    resultCard,
-    resultTitle,
-    resultMessage,
-    metricOne,
-    metricOneValue,
-    metricTwo,
-    metricTwoValue,
-    connections
-  ];
+  const experience =
+    document.getElementById("experience");
 
-  if (requiredElements.some(element => !element) || capabilityButtons.length === 0) {
-    console.error("Ondeva demo: one or more required elements are missing from index.html.");
-    return;
-  }
+  const agentNode =
+    document.getElementById("agentNode");
 
-  let selectedCapability = null;
-  let agentEnabled = true;
-  let runId = 0;
-  let resultTimer = null;
-  let resizeFrame = null;
+  const ondevaNode =
+    document.getElementById("ondevaNode");
 
-  const capabilityData = {
-    database: {
-      prompt: "Analyze the latest connected data and return the key insight.",
-      direct: {
-        title: "Data connected",
-        message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus.",
-        one: "Lorem ipsum",
-        valueOne: "Lorem",
-        two: "Lorem ipsum",
-        valueTwo: "Lorem"
-      },
-      agent: {
-        title: "Insight generated",
-        message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus.",
-        one: "Lorem ipsum",
-        valueOne: "Lorem",
-        two: "Lorem ipsum",
-        valueTwo: "Lorem"
-      }
-    },
-    workflow: {
-      prompt: "Run the relevant workflow using the available business context.",
-      direct: {
-        title: "Workflow ready",
-        message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus.",
-        one: "Lorem ipsum",
-        valueOne: "Lorem",
-        two: "Lorem ipsum",
-        valueTwo: "Lorem"
-      },
-      agent: {
-        title: "Workflow executed",
-        message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus.",
-        one: "Lorem ipsum",
-        valueOne: "Lorem",
-        two: "Lorem ipsum",
-        valueTwo: "Lorem"
-      }
-    },
-    apis: {
-      prompt: "Use the connected API to retrieve the required information.",
-      direct: {
-        title: "API connected",
-        message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus.",
-        one: "Lorem ipsum",
-        valueOne: "Lorem",
-        two: "Lorem ipsum",
-        valueTwo: "Lorem"
-      },
-      agent: {
-        title: "API task completed",
-        message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus.",
-        one: "Lorem ipsum",
-        valueOne: "Lorem",
-        two: "Lorem ipsum",
-        valueTwo: "Lorem"
-      }
-    }
+  const capabilityButtons =
+    [...document.querySelectorAll(".capability")];
+
+  const promptText =
+    document.getElementById("promptText");
+
+  const promptCursor =
+    document.getElementById("promptCursor");
+
+  const resultCard =
+    document.getElementById("resultCard");
+
+  const resultTitle =
+    document.getElementById("resultTitle");
+
+  const resultCopy =
+    document.getElementById("resultCopy");
+
+  const resultVisual =
+    document.getElementById("resultVisual");
+
+  const connections =
+    document.getElementById("connections");
+
+
+  let selectedCapability =
+    null;
+
+  let currentRun =
+    0;
+
+
+  /*
+    Track the previous variation used
+    for each capability so we avoid
+    immediate repetition.
+  */
+
+  const lastVariation = {
+    database: null,
+    workflow: null,
+    apis: null
   };
 
-  function point(element, side) {
-    const containerRect = experience.getBoundingClientRect();
-    const rect = element.getBoundingClientRect();
 
-    let x = rect.left - containerRect.left + rect.width / 2;
+  /* ============================================================
+     DATA
+     ============================================================ */
 
-    if (side === "left") x = rect.left - containerRect.left;
-    if (side === "right") x = rect.right - containerRect.left;
+  const data = {
 
-    return {
-      x,
-      y: rect.top - containerRect.top + rect.height / 2
-    };
-  }
+    database: [
 
-  function makePath(start, end, className) {
-    const ns = "http://www.w3.org/2000/svg";
-    const path = document.createElementNS(ns, "path");
-    const distance = Math.max(30, Math.abs(end.x - start.x) * 0.42);
+      {
+        id: 1,
 
-    path.setAttribute("class", className);
-    path.setAttribute(
-      "d",
-      `M ${start.x} ${start.y} C ${start.x + distance} ${start.y}, ${end.x - distance} ${end.y}, ${end.x} ${end.y}`
-    );
+        prompt:
+          "1 Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
 
-    connections.appendChild(path);
-    return path;
-  }
+        title:
+          "Database result 1",
 
-  function animateDot(path, direct = false, delay = 0) {
-    window.setTimeout(() => {
-      if (!path.isConnected) return;
+        copy:
+          "1 Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
 
-      const ns = "http://www.w3.org/2000/svg";
-      const dot = document.createElementNS(ns, "circle");
-      const length = path.getTotalLength();
-      const duration = 420;
-      const startedAt = performance.now();
+        visual:
+          "bars"
+      },
 
-      dot.setAttribute("r", "5");
-      dot.setAttribute("class", direct ? "flow-dot direct" : "flow-dot");
-      connections.appendChild(dot);
+      {
+        id: 2,
 
-      function frame(now) {
-        if (!dot.isConnected || !path.isConnected) return;
+        prompt:
+          "2 Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
 
-        const progress = Math.min(1, (now - startedAt) / duration);
-        const position = path.getPointAtLength(length * progress);
+        title:
+          "Database result 2",
 
-        dot.setAttribute("cx", position.x);
-        dot.setAttribute("cy", position.y);
+        copy:
+          "2 Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
 
-        if (progress < 1) {
-          requestAnimationFrame(frame);
-        } else {
-          dot.remove();
-        }
+        visual:
+          "donut"
+      },
+
+      {
+        id: 3,
+
+        prompt:
+          "3 Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+
+        title:
+          "Database result 3",
+
+        copy:
+          "3 Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+
+        visual:
+          "line"
+      },
+
+      {
+        id: 4,
+
+        prompt:
+          "4 Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+
+        title:
+          "Database result 4",
+
+        copy:
+          "4 Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+
+        visual:
+          "kpi"
       }
 
-      requestAnimationFrame(frame);
-    }, delay);
-  }
+    ],
 
-  function drawFlow(animate = false) {
-    connections.innerHTML = "";
 
-    if (window.innerWidth <= 950) return;
+    workflow: [
 
-    const containerRect = experience.getBoundingClientRect();
-    connections.setAttribute("viewBox", `0 0 ${containerRect.width} ${containerRect.height}`);
+      {
+        id: 1,
 
-    const ondevaRight = point(ondeva, "right");
+        prompt:
+          "1 Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
 
-    capabilityButtons.forEach(button => {
-      const capabilityLeft = point(button, "left");
-      const active = button === selectedCapability;
-      const path = makePath(
-        ondevaRight,
-        capabilityLeft,
-        active ? "line active" : "line"
+        title:
+          "Workflow result 1",
+
+        copy:
+          "1 Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+
+        visual:
+          "line"
+      },
+
+      {
+        id: 2,
+
+        prompt:
+          "2 Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+
+        title:
+          "Workflow result 2",
+
+        copy:
+          "2 Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+
+        visual:
+          "bars"
+      },
+
+      {
+        id: 3,
+
+        prompt:
+          "3 Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+
+        title:
+          "Workflow result 3",
+
+        copy:
+          "3 Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+
+        visual:
+          "kpi"
+      },
+
+      {
+        id: 4,
+
+        prompt:
+          "4 Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+
+        title:
+          "Workflow result 4",
+
+        copy:
+          "4 Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+
+        visual:
+          "donut"
+      }
+
+    ],
+
+
+    apis: [
+
+      {
+        id: 1,
+
+        prompt:
+          "1 Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+
+        title:
+          "API result 1",
+
+        copy:
+          "1 Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+
+        visual:
+          "donut"
+      },
+
+      {
+        id: 2,
+
+        prompt:
+          "2 Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+
+        title:
+          "API result 2",
+
+        copy:
+          "2 Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+
+        visual:
+          "line"
+      },
+
+      {
+        id: 3,
+
+        prompt:
+          "3 Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+
+        title:
+          "API result 3",
+
+        copy:
+          "3 Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+
+        visual:
+          "bars"
+      },
+
+      {
+        id: 4,
+
+        prompt:
+          "4 Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+
+        title:
+          "API result 4",
+
+        copy:
+          "4 Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+
+        visual:
+          "kpi"
+      }
+
+    ]
+
+  };
+
+
+  /* ============================================================
+     RANDOM VARIATION
+     ============================================================ */
+
+  function getVariation(
+    capability
+  ) {
+
+    const options =
+      data[capability];
+
+
+    const previous =
+      lastVariation[capability];
+
+
+    let candidates =
+      options.filter(
+        option =>
+          option.id !== previous
       );
 
-      if (animate && active) animateDot(path, false, 0);
-    });
 
-    if (!selectedCapability) return;
-
-    const selectedRight = point(selectedCapability, "right");
-    const resultLeft = point(resultCard, "left");
-
-    if (!agentEnabled) {
-      const direct = makePath(selectedRight, resultLeft, "line direct");
-      if (animate) animateDot(direct, true, 260);
-      return;
+    if (
+      candidates.length === 0
+    ) {
+      candidates = options;
     }
 
-    const agentLeft = point(agentNode, "left");
-    const agentRight = point(agentNode, "right");
-    const toAgent = makePath(selectedRight, agentLeft, "line active");
-    const toResult = makePath(agentRight, resultLeft, "line active");
 
-    if (animate) {
-      animateDot(toAgent, false, 260);
-      animateDot(toResult, false, 1500);
-    }
+    const randomIndex =
+      Math.floor(
+        Math.random() *
+        candidates.length
+      );
+
+
+    const choice =
+      candidates[randomIndex];
+
+
+    lastVariation[capability] =
+      choice.id;
+
+
+    return choice;
+
   }
 
-  function typePrompt(text, id) {
-    return new Promise(resolve => {
-      promptText.textContent = "";
-      promptCursor.hidden = false;
 
-      const totalDuration = 900;
-      const interval = Math.max(12, totalDuration / Math.max(text.length, 1));
-      let index = 0;
+  /* ============================================================
+     CHARTS
+     ============================================================ */
 
-      function typeNext() {
-        if (id !== runId) {
-          promptCursor.hidden = true;
-          resolve();
+  function createBars() {
+
+    const values =
+      [48, 78, 61, 92, 68];
+
+
+    const wrapper =
+      document.createElement(
+        "div"
+      );
+
+
+    wrapper.className =
+      "chart-bars";
+
+
+    values.forEach(
+      value => {
+
+        const bar =
+          document.createElement(
+            "div"
+          );
+
+
+        bar.className =
+          "chart-bar";
+
+
+        bar.style.height =
+          `${value}%`;
+
+
+        wrapper.appendChild(
+          bar
+        );
+
+      }
+    );
+
+
+    return wrapper;
+
+  }
+
+
+  function createDonut() {
+
+    const wrapper =
+      document.createElement(
+        "div"
+      );
+
+
+    wrapper.className =
+      "chart-donut";
+
+
+    const value =
+      document.createElement(
+        "div"
+      );
+
+
+    value.className =
+      "chart-donut-value";
+
+
+    value.textContent =
+      "68%";
+
+
+    wrapper.appendChild(
+      value
+    );
+
+
+    return wrapper;
+
+  }
+
+
+  function createLine() {
+
+    const wrapper =
+      document.createElement(
+        "div"
+      );
+
+
+    wrapper.className =
+      "chart-line";
+
+
+    wrapper.innerHTML = `
+      <svg
+        viewBox="0 0 260 140"
+        preserveAspectRatio="none"
+      >
+
+        <path
+          d="
+            M 5 110
+            C 35 98,
+              48 82,
+              72 87
+
+            C 100 92,
+              115 54,
+              142 60
+
+            C 170 67,
+              183 30,
+              210 38
+
+            C 228 41,
+              242 24,
+              255 18
+          "
+        />
+
+        <circle
+          cx="72"
+          cy="87"
+          r="4"
+        />
+
+        <circle
+          cx="142"
+          cy="60"
+          r="4"
+        />
+
+        <circle
+          cx="210"
+          cy="38"
+          r="4"
+        />
+
+        <circle
+          cx="255"
+          cy="18"
+          r="4"
+        />
+
+      </svg>
+    `;
+
+
+    return wrapper;
+
+  }
+
+
+  function createKpi() {
+
+    const wrapper =
+      document.createElement(
+        "div"
+      );
+
+
+    wrapper.className =
+      "chart-kpi";
+
+
+    wrapper.innerHTML = `
+      <div class="chart-kpi-value">
+        84%
+      </div>
+
+      <div class="chart-kpi-label">
+        Lorem ipsum
+      </div>
+    `;
+
+
+    return wrapper;
+
+  }
+
+
+  function renderVisual(
+    type
+  ) {
+
+    resultVisual.innerHTML = "";
+
+
+    let visual;
+
+
+    switch (type) {
+
+      case "bars":
+        visual = createBars();
+        break;
+
+
+      case "donut":
+        visual = createDonut();
+        break;
+
+
+      case "line":
+        visual = createLine();
+        break;
+
+
+      case "kpi":
+        visual = createKpi();
+        break;
+
+
+      default:
+        visual = createBars();
+
+    }
+
+
+    resultVisual.appendChild(
+      visual
+    );
+
+  }
+
+
+  /* ============================================================
+     PROMPT TYPING
+     ============================================================ */
+
+  function typePrompt(
+    text,
+    run
+  ) {
+
+    return new Promise(
+      resolve => {
+
+        promptText.textContent =
+          "";
+
+
+        promptCursor.hidden =
+          false;
+
+
+        /*
+          ~1.1 seconds total.
+        */
+
+        const duration =
+          1050;
+
+
+        const interval =
+          Math.max(
+            12,
+            duration /
+            text.length
+          );
+
+
+        let index = 0;
+
+
+        function next() {
+
+          if (
+            run !==
+            currentRun
+          ) {
+
+            resolve();
+
+            return;
+
+          }
+
+
+          promptText.textContent =
+            text.slice(
+              0,
+              index + 1
+            );
+
+
+          index++;
+
+
+          if (
+            index <
+            text.length
+          ) {
+
+            setTimeout(
+              next,
+              interval
+            );
+
+          } else {
+
+            promptCursor.hidden =
+              true;
+
+
+            resolve();
+
+          }
+
+        }
+
+
+        setTimeout(
+          next,
+          120
+        );
+
+      }
+    );
+
+  }
+
+
+  /* ============================================================
+     POINT
+     ============================================================ */
+
+  function point(
+    element,
+    side
+  ) {
+
+    const container =
+      experience.getBoundingClientRect();
+
+
+    const rect =
+      element.getBoundingClientRect();
+
+
+    let x =
+      rect.left -
+      container.left +
+      rect.width / 2;
+
+
+    if (
+      side === "left"
+    ) {
+
+      x =
+        rect.left -
+        container.left;
+
+    }
+
+
+    if (
+      side === "right"
+    ) {
+
+      x =
+        rect.right -
+        container.left;
+
+    }
+
+
+    return {
+
+      x,
+
+      y:
+        rect.top -
+        container.top +
+        rect.height / 2
+
+    };
+
+  }
+
+
+  /* ============================================================
+     SVG PATH
+     ============================================================ */
+
+  function makePath(
+    start,
+    end,
+    className
+  ) {
+
+    const ns =
+      "http://www.w3.org/2000/svg";
+
+
+    const path =
+      document.createElementNS(
+        ns,
+        "path"
+      );
+
+
+    path.setAttribute(
+      "class",
+      className
+    );
+
+
+    const distance =
+      Math.max(
+        30,
+        Math.abs(
+          end.x -
+          start.x
+        ) * .42
+      );
+
+
+    path.setAttribute(
+      "d",
+      `
+        M ${start.x} ${start.y}
+        C ${start.x + distance} ${start.y},
+          ${end.x - distance} ${end.y},
+          ${end.x} ${end.y}
+      `
+    );
+
+
+    connections.appendChild(
+      path
+    );
+
+
+    return path;
+
+  }
+
+
+  /* ============================================================
+     FLOW DOT
+     ============================================================ */
+
+  function animateDot(
+    path,
+    delay = 0
+  ) {
+
+    setTimeout(
+      () => {
+
+        if (
+          !path.isConnected
+        ) {
           return;
         }
 
-        promptText.textContent = text.slice(0, index + 1);
-        index += 1;
 
-        if (index < text.length) {
-          window.setTimeout(typeNext, interval);
-        } else {
-          promptCursor.hidden = true;
-          resolve();
+        const ns =
+          "http://www.w3.org/2000/svg";
+
+
+        const dot =
+          document.createElementNS(
+            ns,
+            "circle"
+          );
+
+
+        dot.setAttribute(
+          "r",
+          "5"
+        );
+
+
+        dot.setAttribute(
+          "class",
+          "flow-dot"
+        );
+
+
+        connections.appendChild(
+          dot
+        );
+
+
+        const length =
+          path.getTotalLength();
+
+
+        const duration =
+          420;
+
+
+        const start =
+          performance.now();
+
+
+        function frame(now) {
+
+          if (
+            !dot.isConnected
+          ) {
+            return;
+          }
+
+
+          const progress =
+            Math.min(
+              1,
+              (now - start) /
+              duration
+            );
+
+
+          const position =
+            path.getPointAtLength(
+              length *
+              progress
+            );
+
+
+          dot.setAttribute(
+            "cx",
+            position.x
+          );
+
+
+          dot.setAttribute(
+            "cy",
+            position.y
+          );
+
+
+          if (
+            progress < 1
+          ) {
+
+            requestAnimationFrame(
+              frame
+            );
+
+          } else {
+
+            dot.remove();
+
+          }
+
         }
+
+
+        requestAnimationFrame(
+          frame
+        );
+
+      },
+      delay
+    );
+
+  }
+
+
+  /* ============================================================
+     DRAW FLOW
+     ============================================================ */
+
+  function drawFlow(
+    animate = false
+  ) {
+
+    connections.innerHTML =
+      "";
+
+
+    if (
+      window.innerWidth <=
+      900
+    ) {
+      return;
+    }
+
+
+    const rect =
+      experience.getBoundingClientRect();
+
+
+    connections.setAttribute(
+      "viewBox",
+      `0 0 ${rect.width} ${rect.height}`
+    );
+
+
+    /*
+      AI Agent -> Ondeva
+    */
+
+    const agentRight =
+      point(
+        agentNode,
+        "right"
+      );
+
+
+    const ondevaLeft =
+      point(
+        ondevaNode,
+        "left"
+      );
+
+
+    const agentPath =
+      makePath(
+        agentRight,
+        ondevaLeft,
+        "line active"
+      );
+
+
+    /*
+      Ondeva -> capabilities
+    */
+
+    const ondevaRight =
+      point(
+        ondevaNode,
+        "right"
+      );
+
+
+    capabilityButtons.forEach(
+      button => {
+
+        const capabilityLeft =
+          point(
+            button,
+            "left"
+          );
+
+
+        const isActive =
+          button ===
+          selectedCapability;
+
+
+        const path =
+          makePath(
+            ondevaRight,
+            capabilityLeft,
+            isActive
+              ? "line active"
+              : "line"
+          );
+
+
+        if (
+          animate &&
+          isActive
+        ) {
+
+          animateDot(
+            path,
+            420
+          );
+
+        }
+
       }
+    );
 
-      window.setTimeout(typeNext, 120);
-    });
+
+    if (
+      !selectedCapability
+    ) {
+      return;
+    }
+
+
+    /*
+      Selected capability -> Result
+    */
+
+    const selectedRight =
+      point(
+        selectedCapability,
+        "right"
+      );
+
+
+    const resultLeft =
+      point(
+        resultCard,
+        "left"
+      );
+
+
+    const resultPath =
+      makePath(
+        selectedRight,
+        resultLeft,
+        "line active"
+      );
+
+
+    if (animate) {
+
+      animateDot(
+        agentPath,
+        0
+      );
+
+
+      animateDot(
+        resultPath,
+        1150
+      );
+
+    }
+
   }
 
-  function showFinalResult(data) {
-    resultCard.classList.remove("waiting");
-    resultTitle.textContent = data.title;
-    resultMessage.textContent = data.message;
-    metricOne.textContent = data.one;
-    metricOneValue.textContent = data.valueOne;
-    metricTwo.textContent = data.two;
-    metricTwoValue.textContent = data.valueTwo;
+
+  /* ============================================================
+     RESULT
+     ============================================================ */
+
+  function showResult(
+    variation
+  ) {
+
+    resultTitle.textContent =
+      variation.title;
+
+
+    resultCopy.textContent =
+      variation.copy;
+
+
+    renderVisual(
+      variation.visual
+    );
+
+
+    resultCard.classList.remove(
+      "is-loading"
+    );
+
   }
+
+
+  /* ============================================================
+     RUN SEQUENCE
+     ============================================================ */
 
   async function runSequence() {
-    if (!selectedCapability) return;
 
-    runId += 1;
-    const currentRun = runId;
-    const key = selectedCapability.dataset.capability;
-    const data = capabilityData[key];
-
-    if (!data) {
-      console.error(`Ondeva demo: no data found for capability "${key}".`);
+    if (
+      !selectedCapability
+    ) {
       return;
     }
 
-    window.clearTimeout(resultTimer);
 
-    resultCard.classList.add("waiting");
-    resultCard.classList.toggle("no-agent", !agentEnabled);
-    promptText.textContent = "";
-    promptCursor.hidden = true;
+    currentRun++;
 
-    if (!agentEnabled) {
-      resultTitle.textContent = "Processing directly...";
-      resultMessage.textContent = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
-      metricOne.textContent = "—";
-      metricOneValue.textContent = "";
-      metricTwo.textContent = "—";
-      metricTwoValue.textContent = "";
 
-      drawFlow(true);
+    const run =
+      currentRun;
 
-      resultTimer = window.setTimeout(() => {
-        if (currentRun !== runId) return;
-        showFinalResult(data.direct);
-      }, 900);
 
+    const key =
+      selectedCapability.dataset.capability;
+
+
+    const variation =
+      getVariation(
+        key
+      );
+
+
+    resultCard.classList.add(
+      "is-loading"
+    );
+
+
+    promptText.textContent =
+      "";
+
+
+    promptCursor.hidden =
+      true;
+
+
+    drawFlow(
+      true
+    );
+
+
+    await typePrompt(
+      variation.prompt,
+      run
+    );
+
+
+    if (
+      run !==
+      currentRun
+    ) {
       return;
     }
 
-    resultTitle.textContent = "Agent processing...";
-    resultMessage.textContent = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
-    metricOne.textContent = "—";
-    metricOneValue.textContent = "";
-    metricTwo.textContent = "—";
-    metricTwoValue.textContent = "";
 
-    drawFlow(true);
+    /*
+      Small pause after typing.
+      Total interaction stays
+      comfortably under 3 sec.
+    */
 
-    await typePrompt(data.prompt, currentRun);
-    if (currentRun !== runId) return;
+    setTimeout(
+      () => {
 
-    resultTimer = window.setTimeout(() => {
-      if (currentRun !== runId) return;
-      showFinalResult(data.agent);
-    }, 550);
+        if (
+          run !==
+          currentRun
+        ) {
+          return;
+        }
+
+
+        showResult(
+          variation
+        );
+
+      },
+      450
+    );
+
   }
 
-  function selectCapability(button) {
-    selectedCapability = button;
 
-    capabilityButtons.forEach(item => {
-      const isSelected = item === button;
-      item.classList.toggle("selected", isSelected);
-      item.classList.toggle("dimmed", !isSelected);
+  /* ============================================================
+     SELECT CAPABILITY
+     ============================================================ */
 
-      const action = item.querySelector(".capability-action");
-      if (action) action.textContent = isSelected ? "✓" : "+";
-    });
-  }
+  function selectCapability(
+    button
+  ) {
 
-  capabilityButtons.forEach(button => {
-    button.addEventListener("click", () => {
-      selectCapability(button);
-      runSequence();
-    });
-  });
+    selectedCapability =
+      button;
 
-  agentToggle.addEventListener("click", event => {
-    event.stopPropagation();
 
-    agentEnabled = !agentEnabled;
-    runId += 1;
-    window.clearTimeout(resultTimer);
+    capabilityButtons.forEach(
+      item => {
 
-    agentWrap.classList.toggle("disabled", !agentEnabled);
-    promptText.textContent = "";
-    promptCursor.hidden = true;
+        const selected =
+          item === button;
 
-    const movementStart = performance.now();
 
-    function updateMovement(now) {
-      drawFlow(false);
+        item.classList.toggle(
+          "selected",
+          selected
+        );
 
-      if (now - movementStart < 470) {
-        requestAnimationFrame(updateMovement);
-      } else if (selectedCapability) {
-        runSequence();
+
+        item.classList.toggle(
+          "dimmed",
+          !selected
+        );
+
+
+        const action =
+          item.querySelector(
+            ".capability-action"
+          );
+
+
+        action.textContent =
+          selected
+            ? "✓"
+            : "+";
+
       }
-    }
+    );
 
-    requestAnimationFrame(updateMovement);
-  });
 
-  window.addEventListener("resize", () => {
-    cancelAnimationFrame(resizeFrame);
-    resizeFrame = requestAnimationFrame(() => drawFlow(false));
-  });
-
-  const firstCapability = capabilityButtons[0];
-  selectCapability(firstCapability);
-
-  requestAnimationFrame(() => {
-    drawFlow(false);
     runSequence();
-  });
+
+  }
+
+
+  /* ============================================================
+     EVENTS
+     ============================================================ */
+
+  capabilityButtons.forEach(
+    button => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          selectCapability(
+            button
+          );
+
+        }
+      );
+
+    }
+  );
+
+
+  /* ============================================================
+     RESIZE
+     ============================================================ */
+
+  let resizeFrame;
+
+
+  window.addEventListener(
+    "resize",
+    () => {
+
+      cancelAnimationFrame(
+        resizeFrame
+      );
+
+
+      resizeFrame =
+        requestAnimationFrame(
+          () =>
+            drawFlow(false)
+        );
+
+    }
+  );
+
+
+  /* ============================================================
+     INITIAL STATE
+
+     Database starts selected
+     and immediately runs one
+     random scenario.
+     ============================================================ */
+
+  requestAnimationFrame(
+    () => {
+
+      const firstCapability =
+        capabilityButtons[0];
+
+
+      if (
+        firstCapability
+      ) {
+
+        selectCapability(
+          firstCapability
+        );
+
+      }
+
+    }
+  );
+
 });

@@ -308,10 +308,12 @@ document.addEventListener(
       const options =
         data[capability];
 
+
       const previous =
         lastVariation[
           capability
         ];
+
 
       let candidates =
         options.filter(
@@ -324,8 +326,10 @@ document.addEventListener(
       if (
         candidates.length === 0
       ) {
+
         candidates =
           options;
+
       }
 
 
@@ -524,15 +528,11 @@ document.addEventListener(
 
 
       wrapper.innerHTML = `
-        <div
-          class="chart-kpi-value"
-        >
+        <div class="chart-kpi-value">
           84%
         </div>
 
-        <div
-          class="chart-kpi-label"
-        >
+        <div class="chart-kpi-label">
           Lorem ipsum
         </div>
       `;
@@ -559,30 +559,39 @@ document.addEventListener(
       ) {
 
         case "bars":
+
           visual =
             createBars();
+
           break;
 
 
         case "donut":
+
           visual =
             createDonut();
+
           break;
 
 
         case "line":
+
           visual =
             createLine();
+
           break;
 
 
         case "kpi":
+
           visual =
             createKpi();
+
           break;
 
 
         default:
+
           visual =
             createBars();
 
@@ -597,7 +606,7 @@ document.addEventListener(
 
 
     /* ============================================================
-       PROMPT
+       PROMPT TYPING
        ============================================================ */
 
     function typePrompt(
@@ -628,7 +637,8 @@ document.addEventListener(
             );
 
 
-          let index = 0;
+          let index =
+            0;
 
 
           function next() {
@@ -690,7 +700,7 @@ document.addEventListener(
 
 
     /* ============================================================
-       FLOW
+       FLOW POINTS
        ============================================================ */
 
     function point(
@@ -699,11 +709,13 @@ document.addEventListener(
     ) {
 
       const container =
-        experience.getBoundingClientRect();
+        experience
+          .getBoundingClientRect();
 
 
       const rect =
-        element.getBoundingClientRect();
+        element
+          .getBoundingClientRect();
 
 
       let x =
@@ -747,6 +759,10 @@ document.addEventListener(
 
     }
 
+
+    /* ============================================================
+       CONNECTION PATH
+       ============================================================ */
 
     function makePath(
       start,
@@ -801,6 +817,10 @@ document.addEventListener(
 
     }
 
+
+    /* ============================================================
+       FLOW DOT
+       ============================================================ */
 
     function animateDot(
       path,
@@ -923,6 +943,10 @@ document.addEventListener(
     }
 
 
+    /* ============================================================
+       DRAW FLOW
+       ============================================================ */
+
     function drawFlow(
       animate = false
     ) {
@@ -940,7 +964,8 @@ document.addEventListener(
 
 
       const rect =
-        experience.getBoundingClientRect();
+        experience
+          .getBoundingClientRect();
 
 
       connections.setAttribute(
@@ -948,6 +973,10 @@ document.addEventListener(
         `0 0 ${rect.width} ${rect.height}`
       );
 
+
+      /*
+        AI Agent -> Ondeva
+      */
 
       const agentRight =
         point(
@@ -970,6 +999,10 @@ document.addEventListener(
           "line active"
         );
 
+
+      /*
+        Ondeva -> capabilities
+      */
 
       const ondevaRight =
         point(
@@ -1026,6 +1059,10 @@ document.addEventListener(
       }
 
 
+      /*
+        Selected capability -> Result
+      */
+
       const selectedRight =
         point(
           selectedCapability,
@@ -1069,7 +1106,7 @@ document.addEventListener(
 
 
     /* ============================================================
-       SHOW RESULT
+       RESULT
        ============================================================ */
 
     function showResult(
@@ -1097,7 +1134,7 @@ document.addEventListener(
 
 
     /* ============================================================
-       RUN SEQUENCE
+       RUN
        ============================================================ */
 
     async function runSequence() {
@@ -1198,7 +1235,8 @@ document.addEventListener(
         item => {
 
           const selected =
-            item === button;
+            item ===
+            button;
 
 
           item.classList.toggle(
@@ -1234,98 +1272,6 @@ document.addEventListener(
 
 
     /* ============================================================
-       DIRECTION-AWARE SHADOW
-       ============================================================ */
-
-    capabilityButtons.forEach(
-      card => {
-
-        card.addEventListener(
-          "mousemove",
-          event => {
-
-            const rect =
-              card.getBoundingClientRect();
-
-
-            const centerX =
-              rect.width / 2;
-
-
-            const centerY =
-              rect.height / 2;
-
-
-            const x =
-              event.clientX -
-              rect.left -
-              centerX;
-
-
-            const y =
-              event.clientY -
-              rect.top -
-              centerY;
-
-
-            const maxOffset =
-              11;
-
-
-            const shadowX =
-              -(
-                x /
-                centerX
-              ) *
-              maxOffset;
-
-
-            const shadowY =
-              -(
-                y /
-                centerY
-              ) *
-              maxOffset;
-
-
-            card.style.setProperty(
-              "--shadow-x",
-              `${shadowX}px`
-            );
-
-
-            card.style.setProperty(
-              "--shadow-y",
-              `${shadowY}px`
-            );
-
-          }
-        );
-
-
-        card.addEventListener(
-          "mouseleave",
-          () => {
-
-            card.style.setProperty(
-              "--shadow-x",
-              "0px"
-            );
-
-
-            card.style.setProperty(
-              "--shadow-y",
-              "8px"
-            );
-
-          }
-        );
-
-      }
-    );
-
-
-    /* ============================================================
        FOIL MOUSE RESPONSE
        ============================================================ */
 
@@ -1334,7 +1280,8 @@ document.addEventListener(
       event => {
 
         const rect =
-          resultCard.getBoundingClientRect();
+          resultCard
+            .getBoundingClientRect();
 
 
         const x =
@@ -1434,8 +1381,6 @@ document.addEventListener(
             x,
             y,
 
-            radius: 1.05,
-
             currentRadius:
               1.05
 
@@ -1456,8 +1401,7 @@ document.addEventListener(
 
 
       const dpr =
-        window
-          .devicePixelRatio ||
+        window.devicePixelRatio ||
         1;
 
 

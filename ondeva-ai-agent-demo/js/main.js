@@ -1,25 +1,45 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-  const experience = document.getElementById("experience");
-  const agentNode = document.getElementById("agentNode");
-  const ondevaNode = document.getElementById("ondevaNode");
+  const experience =
+    document.getElementById("experience");
+
+  const agentNode =
+    document.getElementById("agentNode");
+
+  const ondevaNode =
+    document.getElementById("ondevaNode");
 
   const capabilityButtons = [
     ...document.querySelectorAll(".capability")
   ];
 
-  const promptText = document.getElementById("promptText");
-  const promptCursor = document.getElementById("promptCursor");
+  const promptText =
+    document.getElementById("promptText");
 
-  const resultCard = document.getElementById("resultCard");
-  const resultTitle = document.getElementById("resultTitle");
-  const resultCopy = document.getElementById("resultCopy");
-  const resultVisual = document.getElementById("resultVisual");
+  const promptCursor =
+    document.getElementById("promptCursor");
 
-  const connections = document.getElementById("connections");
+  const resultCard =
+    document.getElementById("resultCard");
 
-  const canvas = document.getElementById("proximityCanvas");
-  const ctx = canvas.getContext("2d");
+  const resultTitle =
+    document.getElementById("resultTitle");
+
+  const resultCopy =
+    document.getElementById("resultCopy");
+
+  const resultVisual =
+    document.getElementById("resultVisual");
+
+  const connections =
+    document.getElementById("connections");
+
+  const canvas =
+    document.getElementById("proximityCanvas");
+
+  const ctx =
+    canvas.getContext("2d");
+
 
   let selectedCapability = null;
   let currentRun = 0;
@@ -53,7 +73,8 @@ document.addEventListener("DOMContentLoaded", () => {
           <strong>Oldest request:</strong> 6 days overdue<br>
           <strong>Next step:</strong> Review priority list`,
 
-        visual: "attention"
+        visual:
+          "attention"
       },
 
 
@@ -71,7 +92,8 @@ document.addEventListener("DOMContentLoaded", () => {
           <strong>This month:</strong> 42 sign-ups<br>
           <strong>Change:</strong> +18% from last month`,
 
-        visual: "signupTrend"
+        visual:
+          "signupTrend"
       },
 
 
@@ -89,7 +111,8 @@ document.addEventListener("DOMContentLoaded", () => {
           <strong>Contracts:</strong> 8 expiring soon<br>
           <strong>Closest renewal:</strong> 5 days`,
 
-        visual: "renewals"
+        visual:
+          "renewals"
       },
 
 
@@ -107,7 +130,8 @@ document.addEventListener("DOMContentLoaded", () => {
           <strong>Largest group:</strong> Growth<br>
           <strong>Share:</strong> 46% of customers`,
 
-        visual: "customerMix"
+        visual:
+          "customerMix"
       }
 
     ],
@@ -129,7 +153,8 @@ document.addEventListener("DOMContentLoaded", () => {
           <strong>Tasks created:</strong> 4<br>
           <strong>Owner notified:</strong> Account team`,
 
-        visual: "checklist"
+        visual:
+          "checklist"
       },
 
 
@@ -147,7 +172,8 @@ document.addEventListener("DOMContentLoaded", () => {
           <strong>Queue:</strong> Urgent support<br>
           <strong>Team notified:</strong> Yes`,
 
-        visual: "escalation"
+        visual:
+          "escalation"
       },
 
 
@@ -165,7 +191,8 @@ document.addEventListener("DOMContentLoaded", () => {
           <strong>Accounts matched:</strong> 7<br>
           <strong>Tasks created:</strong> 7`,
 
-        visual: "followUp"
+        visual:
+          "followUp"
       },
 
 
@@ -183,7 +210,8 @@ document.addEventListener("DOMContentLoaded", () => {
           <strong>Steps completed:</strong> 3 of 3<br>
           <strong>Delivery team:</strong> Notified`,
 
-        visual: "handover"
+        visual:
+          "handover"
       }
 
     ],
@@ -205,7 +233,8 @@ document.addEventListener("DOMContentLoaded", () => {
           <strong>Order:</strong> #10482<br>
           <strong>Delivery:</strong> In transit`,
 
-        visual: "delivery"
+        visual:
+          "delivery"
       },
 
 
@@ -223,7 +252,8 @@ document.addEventListener("DOMContentLoaded", () => {
           <strong>Invoice:</strong> #INV-2481<br>
           <strong>Balance:</strong> €1,240 outstanding`,
 
-        visual: "invoice"
+        visual:
+          "invoice"
       },
 
 
@@ -241,7 +271,8 @@ document.addEventListener("DOMContentLoaded", () => {
           <strong>Availability:</strong> 99.98%<br>
           <strong>Open incidents:</strong> 1`,
 
-        visual: "availability"
+        visual:
+          "availability"
       },
 
 
@@ -259,7 +290,8 @@ document.addEventListener("DOMContentLoaded", () => {
           <strong>Requests:</strong> 18,420 this month<br>
           <strong>Change:</strong> +12% month over month`,
 
-        visual: "apiUsage"
+        visual:
+          "apiUsage"
       }
 
     ]
@@ -273,7 +305,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function getVariation(capability) {
 
-    const options = data[capability];
+    const options =
+      data[capability];
 
     const previous =
       lastVariation[capability];
@@ -288,13 +321,14 @@ document.addEventListener("DOMContentLoaded", () => {
       candidates = options;
     }
 
+    const randomIndex =
+      Math.floor(
+        Math.random() *
+        candidates.length
+      );
+
     const choice =
-      candidates[
-        Math.floor(
-          Math.random() *
-          candidates.length
-        )
-      ];
+      candidates[randomIndex];
 
     lastVariation[capability] =
       choice.id;
@@ -305,7 +339,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* ============================================================
-     VISUAL HELPERS
+     VISUAL WRAPPER
      ============================================================ */
 
   function visualWrapper(className) {
@@ -322,7 +356,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* ============================================================
-     DATABASE 01 — ATTENTION
+     DATABASE — ATTENTION
      ============================================================ */
 
   function createAttention() {
@@ -334,25 +368,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     wrapper.innerHTML = `
       <div class="attention-users">
-
-        <div class="attention-user">
-          <span>JD</span>
-          <i></i>
-        </div>
-
-        <div class="attention-user">
-          <span>AM</span>
-          <i></i>
-        </div>
-
-        <div class="attention-user">
-          <span>KL</span>
-          <i></i>
-        </div>
-
+        <div class="attention-user">JD</div>
+        <div class="attention-user">AM</div>
+        <div class="attention-user">KL</div>
       </div>
 
-      <div class="visual-big-value">
+      <div class="attention-count">
         3
       </div>
 
@@ -367,7 +388,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* ============================================================
-     DATABASE 02 — SIGN-UP TREND
+     DATABASE — SIGNUPS
      ============================================================ */
 
   function createSignupTrend() {
@@ -434,7 +455,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* ============================================================
-     DATABASE 03 — RENEWALS
+     DATABASE — RENEWALS
      ============================================================ */
 
   function createRenewals() {
@@ -446,28 +467,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     wrapper.innerHTML = `
       <div class="calendar-icon">
-
-        <div class="calendar-top">
-          <span></span>
-          <span></span>
-        </div>
-
         <strong>5</strong>
-
         <small>days</small>
-
       </div>
 
-      <div class="renewal-info">
-
-        <strong>
-          8 contracts
-        </strong>
-
-        <span>
-          Expiring within 30 days
-        </span>
-
+      <div class="visual-side-copy">
+        <strong>8 contracts</strong>
+        <span>Expiring within 30 days</span>
       </div>
     `;
 
@@ -477,7 +483,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* ============================================================
-     DATABASE 04 — CUSTOMER MIX
+     DATABASE — CUSTOMER MIX
      ============================================================ */
 
   function createCustomerMix() {
@@ -489,12 +495,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     wrapper.innerHTML = `
       <div class="mix-ring">
-
         <div class="mix-center">
           <strong>46%</strong>
           <span>Growth</span>
         </div>
-
       </div>
     `;
 
@@ -504,7 +508,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* ============================================================
-     WORKFLOW 01 — CHECKLIST
+     WORKFLOW — CHECKLIST
      ============================================================ */
 
   function createChecklist() {
@@ -517,24 +521,24 @@ document.addEventListener("DOMContentLoaded", () => {
     wrapper.innerHTML = `
       <div class="checklist-icon">
 
-        <div>
-          <span>✓</span>
-          <i></i>
+        <div class="checklist-row">
+          <span class="checklist-box">✓</span>
+          <span class="checklist-line"></span>
         </div>
 
-        <div>
-          <span>✓</span>
-          <i></i>
+        <div class="checklist-row">
+          <span class="checklist-box">✓</span>
+          <span class="checklist-line"></span>
         </div>
 
-        <div>
-          <span>✓</span>
-          <i></i>
+        <div class="checklist-row">
+          <span class="checklist-box">✓</span>
+          <span class="checklist-line"></span>
         </div>
 
-        <div>
-          <span>✓</span>
-          <i></i>
+        <div class="checklist-row">
+          <span class="checklist-box">✓</span>
+          <span class="checklist-line"></span>
         </div>
 
       </div>
@@ -551,7 +555,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* ============================================================
-     WORKFLOW 02 — ESCALATION
+     WORKFLOW — ESCALATION
      ============================================================ */
 
   function createEscalation() {
@@ -567,15 +571,8 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
 
       <div class="visual-side-copy">
-
-        <strong>
-          Urgent support
-        </strong>
-
-        <span>
-          Team notified
-        </span>
-
+        <strong>Urgent support</strong>
+        <span>Team notified</span>
       </div>
     `;
 
@@ -585,7 +582,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* ============================================================
-     WORKFLOW 03 — FOLLOW UP
+     WORKFLOW — FOLLOW UP
      ============================================================ */
 
   function createFollowUp() {
@@ -596,23 +593,40 @@ document.addEventListener("DOMContentLoaded", () => {
       );
 
     wrapper.innerHTML = `
-      <div class="clock-icon">
+      <div class="follow-icon">
 
-        <span class="clock-hand-hour"></span>
-        <span class="clock-hand-minute"></span>
+        <svg
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <circle
+            cx="12"
+            cy="12"
+            r="8"
+          />
+
+          <path
+            d="
+              M12 7
+              V12
+              L15 14
+            "
+          />
+
+          <path
+            d="
+              M19 5
+              V9
+              H15
+            "
+          />
+        </svg>
 
       </div>
 
       <div class="visual-side-copy">
-
-        <strong>
-          7 follow-ups
-        </strong>
-
-        <span>
-          Scheduled
-        </span>
-
+        <strong>7 follow-ups</strong>
+        <span>Scheduled</span>
       </div>
     `;
 
@@ -622,7 +636,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* ============================================================
-     WORKFLOW 04 — HANDOVER
+     WORKFLOW — HANDOVER
      ============================================================ */
 
   function createHandover() {
@@ -639,13 +653,13 @@ document.addEventListener("DOMContentLoaded", () => {
           ✓
         </span>
 
-        <i></i>
+        <span class="handover-line"></span>
 
         <span class="handover-step">
           ✓
         </span>
 
-        <i></i>
+        <span class="handover-line"></span>
 
         <span class="handover-step">
           ✓
@@ -664,7 +678,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* ============================================================
-     API 01 — DELIVERY
+     API — DELIVERY
      ============================================================ */
 
   function createDelivery() {
@@ -675,23 +689,67 @@ document.addEventListener("DOMContentLoaded", () => {
       );
 
     wrapper.innerHTML = `
-      <div class="truck-icon">
+      <div class="delivery-icon">
 
-        <div class="truck-body"></div>
-        <div class="truck-cab"></div>
+        <svg
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <path
+            d="
+              M3 6
+              H14
+              V16
+              H3
+              Z
+            "
+          />
 
-        <span class="truck-wheel wheel-one"></span>
-        <span class="truck-wheel wheel-two"></span>
+          <path
+            d="
+              M14 9
+              H18
+              L21 12
+              V16
+              H14
+              Z
+            "
+          />
+
+          <circle
+            cx="7"
+            cy="18"
+            r="2"
+          />
+
+          <circle
+            cx="18"
+            cy="18"
+            r="2"
+          />
+        </svg>
 
       </div>
 
       <div class="delivery-route">
 
-        <span></span>
+        <span class="delivery-route-dot"></span>
 
-        <i></i>
+        <span class="delivery-route-line"></span>
 
-        <strong>›</strong>
+        <svg
+          class="delivery-arrow"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <path
+            d="
+              M9 18
+              L15 12
+              L9 6
+            "
+          />
+        </svg>
 
       </div>
 
@@ -706,7 +764,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* ============================================================
-     API 02 — INVOICE
+     API — INVOICE
      ============================================================ */
 
   function createInvoice() {
@@ -719,24 +777,39 @@ document.addEventListener("DOMContentLoaded", () => {
     wrapper.innerHTML = `
       <div class="invoice-icon">
 
-        <span></span>
-        <span></span>
-        <span></span>
+        <svg
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <path
+            d="
+              M6 3
+              H15
+              L19 7
+              V21
+              H6
+              Z
+            "
+          />
 
-        <strong>€</strong>
+          <path
+            d="
+              M15 3
+              V7
+              H19
+            "
+          />
+
+          <path d="M9 11H16"/>
+          <path d="M9 15H16"/>
+          <path d="M9 18H13"/>
+        </svg>
 
       </div>
 
       <div class="visual-side-copy">
-
-        <strong>
-          €1,240
-        </strong>
-
-        <span>
-          Outstanding
-        </span>
-
+        <strong>€1,240</strong>
+        <span>Outstanding</span>
       </div>
     `;
 
@@ -746,7 +819,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* ============================================================
-     API 03 — AVAILABILITY
+     API — AVAILABILITY
      ============================================================ */
 
   function createAvailability() {
@@ -763,7 +836,6 @@ document.addEventListener("DOMContentLoaded", () => {
           viewBox="0 0 120 120"
           aria-hidden="true"
         >
-
           <circle
             class="availability-track"
             cx="60"
@@ -777,7 +849,6 @@ document.addEventListener("DOMContentLoaded", () => {
             cy="60"
             r="52"
           />
-
         </svg>
 
         <div class="availability-copy">
@@ -794,7 +865,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* ============================================================
-     API 04 — API USAGE
+     API — USAGE
      ============================================================ */
 
   function createApiUsage() {
@@ -846,147 +917,194 @@ document.addEventListener("DOMContentLoaded", () => {
 
     resultVisual.innerHTML = "";
 
-    let visual;
+    let visual = null;
 
     switch (variation.visual) {
 
       case "attention":
-        visual = createAttention();
+        visual =
+          createAttention();
         break;
 
       case "signupTrend":
-        visual = createSignupTrend();
+        visual =
+          createSignupTrend();
         break;
 
       case "renewals":
-        visual = createRenewals();
+        visual =
+          createRenewals();
         break;
 
       case "customerMix":
-        visual = createCustomerMix();
+        visual =
+          createCustomerMix();
         break;
 
       case "checklist":
-        visual = createChecklist();
+        visual =
+          createChecklist();
         break;
 
       case "escalation":
-        visual = createEscalation();
+        visual =
+          createEscalation();
         break;
 
       case "followUp":
-        visual = createFollowUp();
+        visual =
+          createFollowUp();
         break;
 
       case "handover":
-        visual = createHandover();
+        visual =
+          createHandover();
         break;
 
       case "delivery":
-        visual = createDelivery();
+        visual =
+          createDelivery();
         break;
 
       case "invoice":
-        visual = createInvoice();
+        visual =
+          createInvoice();
         break;
 
       case "availability":
-        visual = createAvailability();
+        visual =
+          createAvailability();
         break;
 
       case "apiUsage":
-        visual = createApiUsage();
+        visual =
+          createApiUsage();
         break;
 
     }
 
     if (visual) {
-      resultVisual.appendChild(visual);
+
+      resultVisual.appendChild(
+        visual
+      );
+
     }
 
   }
 
 
   /* ============================================================
-     PROMPT TYPING
+     PROMPT
      ============================================================ */
 
-  function typePrompt(text, run) {
+  function typePrompt(
+    text,
+    run
+  ) {
 
-    return new Promise(resolve => {
-
-      promptText.textContent = "";
-      promptCursor.hidden = false;
-
-      const duration = 1050;
-
-      const interval =
-        Math.max(
-          10,
-          duration / text.length
-        );
-
-      let index = 0;
-
-      function next() {
-
-        if (run !== currentRun) {
-          resolve();
-          return;
-        }
+    return new Promise(
+      resolve => {
 
         promptText.textContent =
-          text.slice(
-            0,
-            index + 1
+          "";
+
+        promptCursor.hidden =
+          false;
+
+        const duration =
+          1050;
+
+        const interval =
+          Math.max(
+            10,
+            duration /
+            text.length
           );
 
-        index++;
+        let index = 0;
 
-        if (index < text.length) {
 
-          setTimeout(
-            next,
-            interval
-          );
+        function next() {
 
-        } else {
+          if (
+            run !==
+            currentRun
+          ) {
 
-          promptCursor.hidden = true;
-          resolve();
+            resolve();
+            return;
+
+          }
+
+          promptText.textContent =
+            text.slice(
+              0,
+              index + 1
+            );
+
+          index++;
+
+
+          if (
+            index <
+            text.length
+          ) {
+
+            setTimeout(
+              next,
+              interval
+            );
+
+          } else {
+
+            promptCursor.hidden =
+              true;
+
+            resolve();
+
+          }
 
         }
 
+
+        setTimeout(
+          next,
+          120
+        );
+
       }
-
-      setTimeout(
-        next,
-        120
-      );
-
-    });
+    );
 
   }
 
 
   /* ============================================================
-     FLOW
+     FLOW HELPERS
      ============================================================ */
 
-  function point(element, side) {
+  function point(
+    element,
+    side
+  ) {
 
     const container =
-      experience.getBoundingClientRect();
+      experience
+        .getBoundingClientRect();
 
     const rect =
-      element.getBoundingClientRect();
+      element
+        .getBoundingClientRect();
 
     let x =
       rect.left -
       container.left +
       rect.width / 2;
 
-    if (side === "left") {
+
+    if (
+      side === "left"
+    ) {
 
       x =
         rect.left -
@@ -994,13 +1112,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
     }
 
-    if (side === "right") {
+
+    if (
+      side === "right"
+    ) {
 
       x =
         rect.right -
         container.left;
 
     }
+
 
     return {
 
@@ -1040,7 +1162,8 @@ document.addEventListener("DOMContentLoaded", () => {
       Math.max(
         30,
         Math.abs(
-          end.x - start.x
+          end.x -
+          start.x
         ) * .42
       );
 
@@ -1054,7 +1177,9 @@ document.addEventListener("DOMContentLoaded", () => {
       `
     );
 
-    connections.appendChild(path);
+    connections.appendChild(
+      path
+    );
 
     return path;
 
@@ -1066,83 +1191,103 @@ document.addEventListener("DOMContentLoaded", () => {
     delay = 0
   ) {
 
-    setTimeout(() => {
+    setTimeout(
+      () => {
 
-      if (!path.isConnected) {
-        return;
-      }
-
-      const ns =
-        "http://www.w3.org/2000/svg";
-
-      const dot =
-        document.createElementNS(
-          ns,
-          "circle"
-        );
-
-      dot.setAttribute("r", "5");
-
-      dot.setAttribute(
-        "class",
-        "flow-dot"
-      );
-
-      connections.appendChild(dot);
-
-      const length =
-        path.getTotalLength();
-
-      const duration = 420;
-
-      const start =
-        performance.now();
-
-      function frame(now) {
-
-        if (!dot.isConnected) {
+        if (
+          !path.isConnected
+        ) {
           return;
         }
 
-        const progress =
-          Math.min(
-            1,
-            (now - start) /
-            duration
-          );
+        const ns =
+          "http://www.w3.org/2000/svg";
 
-        const position =
-          path.getPointAtLength(
-            length * progress
+        const dot =
+          document.createElementNS(
+            ns,
+            "circle"
           );
 
         dot.setAttribute(
-          "cx",
-          position.x
+          "r",
+          "5"
         );
 
         dot.setAttribute(
-          "cy",
-          position.y
+          "class",
+          "flow-dot"
         );
 
-        if (progress < 1) {
+        connections.appendChild(
+          dot
+        );
 
-          requestAnimationFrame(
-            frame
+        const length =
+          path.getTotalLength();
+
+        const duration =
+          420;
+
+        const start =
+          performance.now();
+
+
+        function frame(now) {
+
+          if (
+            !dot.isConnected
+          ) {
+            return;
+          }
+
+          const progress =
+            Math.min(
+              1,
+              (now - start) /
+              duration
+            );
+
+          const position =
+            path.getPointAtLength(
+              length * progress
+            );
+
+          dot.setAttribute(
+            "cx",
+            position.x
           );
 
-        } else {
+          dot.setAttribute(
+            "cy",
+            position.y
+          );
 
-          dot.remove();
+
+          if (
+            progress < 1
+          ) {
+
+            requestAnimationFrame(
+              frame
+            );
+
+          } else {
+
+            dot.remove();
+
+          }
 
         }
 
-      }
 
-      requestAnimationFrame(frame);
+        requestAnimationFrame(
+          frame
+        );
 
-    }, delay);
+      },
+      delay
+    );
 
   }
 
@@ -1151,16 +1296,19 @@ document.addEventListener("DOMContentLoaded", () => {
     animate = false
   ) {
 
-    connections.innerHTML = "";
+    connections.innerHTML =
+      "";
 
     if (
-      window.innerWidth <= 900
+      window.innerWidth <=
+      900
     ) {
       return;
     }
 
     const rect =
-      experience.getBoundingClientRect();
+      experience
+        .getBoundingClientRect();
 
     connections.setAttribute(
       "viewBox",
@@ -1217,6 +1365,7 @@ document.addEventListener("DOMContentLoaded", () => {
               : "line"
           );
 
+
         if (
           animate &&
           isActive
@@ -1233,7 +1382,9 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
 
-    if (!selectedCapability) {
+    if (
+      !selectedCapability
+    ) {
       return;
     }
 
@@ -1306,7 +1457,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function runSequence() {
 
-    if (!selectedCapability) {
+    if (
+      !selectedCapability
+    ) {
       return;
     }
 
@@ -1321,37 +1474,55 @@ document.addEventListener("DOMContentLoaded", () => {
         .capability;
 
     const variation =
-      getVariation(key);
+      getVariation(
+        key
+      );
 
     resultCard.classList.add(
       "is-loading"
     );
 
-    promptText.textContent = "";
-    promptCursor.hidden = true;
+    promptText.textContent =
+      "";
 
-    drawFlow(true);
+    promptCursor.hidden =
+      true;
+
+    drawFlow(
+      true
+    );
 
     await typePrompt(
       variation.prompt,
       run
     );
 
-    if (run !== currentRun) {
+
+    if (
+      run !==
+      currentRun
+    ) {
       return;
     }
 
-    setTimeout(() => {
 
-      if (run !== currentRun) {
-        return;
-      }
+    setTimeout(
+      () => {
 
-      showResult(
-        variation
-      );
+        if (
+          run !==
+          currentRun
+        ) {
+          return;
+        }
 
-    }, 450);
+        showResult(
+          variation
+        );
+
+      },
+      450
+    );
 
   }
 
@@ -1371,7 +1542,8 @@ document.addEventListener("DOMContentLoaded", () => {
       item => {
 
         const selected =
-          item === button;
+          item ===
+          button;
 
         item.classList.toggle(
           "selected",
@@ -1482,7 +1654,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     dots = [];
 
-    const gap = 30;
+    const gap =
+      30;
 
     for (
       let y = gap;
@@ -1499,7 +1672,8 @@ document.addEventListener("DOMContentLoaded", () => {
         dots.push({
           x,
           y,
-          currentRadius: 1.05
+          currentRadius:
+            1.05
         });
 
       }
@@ -1521,12 +1695,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     canvas.width =
       Math.round(
-        rect.width * dpr
+        rect.width *
+        dpr
       );
 
     canvas.height =
       Math.round(
-        rect.height * dpr
+        rect.height *
+        dpr
       );
 
     canvas.style.width =
@@ -1576,8 +1752,11 @@ document.addEventListener("DOMContentLoaded", () => {
     "mouseleave",
     () => {
 
-      mouse.x = -1000;
-      mouse.y = -1000;
+      mouse.x =
+        -1000;
+
+      mouse.y =
+        -1000;
 
     }
   );
@@ -1596,80 +1775,90 @@ document.addEventListener("DOMContentLoaded", () => {
       rect.height
     );
 
-    dots.forEach(dot => {
+    dots.forEach(
+      dot => {
 
-      const dx =
-        mouse.x - dot.x;
+        const dx =
+          mouse.x -
+          dot.x;
 
-      const dy =
-        mouse.y - dot.y;
+        const dy =
+          mouse.y -
+          dot.y;
 
-      const distance =
-        Math.sqrt(
-          dx * dx +
-          dy * dy
-        );
+        const distance =
+          Math.sqrt(
+            dx * dx +
+            dy * dy
+          );
 
-      const influence =
-        Math.max(
+        const influence =
+          Math.max(
+            0,
+            1 -
+            distance /
+            155
+          );
+
+        const targetRadius =
+          1.05 +
+          influence *
+          4.8;
+
+        dot.currentRadius +=
+          (
+            targetRadius -
+            dot.currentRadius
+          ) * .13;
+
+        const r =
+          Math.round(
+            74 +
+            45 *
+            influence
+          );
+
+        const g =
+          Math.round(
+            67 +
+            125 *
+            influence
+          );
+
+        const b =
+          Math.round(
+            194 +
+            35 *
+            influence
+          );
+
+        const alpha =
+          .09 +
+          influence *
+          .48;
+
+        ctx.beginPath();
+
+        ctx.arc(
+          dot.x,
+          dot.y,
+          dot.currentRadius,
           0,
-          1 -
-          distance / 155
+          Math.PI * 2
         );
 
-      const targetRadius =
-        1.05 +
-        influence * 4.8;
+        ctx.fillStyle =
+          `rgba(
+            ${r},
+            ${g},
+            ${b},
+            ${alpha}
+          )`;
 
-      dot.currentRadius +=
-        (
-          targetRadius -
-          dot.currentRadius
-        ) * .13;
+        ctx.fill();
 
-      const r =
-        Math.round(
-          74 +
-          45 * influence
-        );
-
-      const g =
-        Math.round(
-          67 +
-          125 * influence
-        );
-
-      const b =
-        Math.round(
-          194 +
-          35 * influence
-        );
-
-      const alpha =
-        .09 +
-        influence * .48;
-
-      ctx.beginPath();
-
-      ctx.arc(
-        dot.x,
-        dot.y,
-        dot.currentRadius,
-        0,
-        Math.PI * 2
-      );
-
-      ctx.fillStyle =
-        `rgba(
-          ${r},
-          ${g},
-          ${b},
-          ${alpha}
-        )`;
-
-      ctx.fill();
-
-    });
+      }
+    );
 
     requestAnimationFrame(
       drawDots
@@ -1719,7 +1908,10 @@ document.addEventListener("DOMContentLoaded", () => {
           () => {
 
             resizeCanvas();
-            drawFlow(false);
+
+            drawFlow(
+              false
+            );
 
           }
         );
@@ -1733,6 +1925,7 @@ document.addEventListener("DOMContentLoaded", () => {
      ============================================================ */
 
   resizeCanvas();
+
   drawDots();
 
   requestAnimationFrame(
@@ -1741,7 +1934,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const firstCapability =
         capabilityButtons[0];
 
-      if (firstCapability) {
+      if (
+        firstCapability
+      ) {
 
         selectCapability(
           firstCapability

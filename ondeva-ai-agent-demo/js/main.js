@@ -94,64 +94,84 @@ document.addEventListener(
           id: 1,
 
           prompt:
-            "1 Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            "Find customers with an overdue request and no follow-up scheduled.",
 
           title:
-            "Database result 1",
+            "3 customers need attention",
 
           copy:
-            "1 Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            `Requests were matched with account records.<br>
+            <strong>Oldest request:</strong> 6 days overdue<br>
+            <strong>Next step:</strong> Review priority list`,
 
           visual:
-            "bars"
+            "kpi",
+
+          visualValue:
+            "3",
+
+          visualLabel:
+            "Customers"
         },
+
 
         {
           id: 2,
 
           prompt:
-            "2 Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            "Show new customer sign-ups by month for the last six months.",
 
           title:
-            "Database result 2",
+            "Sign-ups over time",
 
           copy:
-            "2 Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-
-          visual:
-            "donut"
-        },
-
-        {
-          id: 3,
-
-          prompt:
-            "3 Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-
-          title:
-            "Database result 3",
-
-          copy:
-            "3 Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            `A small line graph shows the monthly trend.<br>
+            <strong>This month:</strong> 42 sign-ups<br>
+            <strong>Change:</strong> +18% from last month`,
 
           visual:
             "line"
         },
 
+
+        {
+          id: 3,
+
+          prompt:
+            "Find customers whose contracts expire in the next 30 days.",
+
+          title:
+            "Renewals approaching",
+
+          copy:
+            `Upcoming contract dates were matched with active accounts.<br>
+            <strong>Contracts:</strong> 8 expiring soon<br>
+            <strong>Closest renewal:</strong> 5 days`,
+
+          visual:
+            "bars"
+        },
+
+
         {
           id: 4,
 
           prompt:
-            "4 Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            "Compare active customers by account tier and show the largest group.",
 
           title:
-            "Database result 4",
+            "Customer mix identified",
 
           copy:
-            "4 Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            `Active accounts were grouped by their current service tier.<br>
+            <strong>Largest group:</strong> Growth<br>
+            <strong>Share:</strong> 46% of customers`,
 
           visual:
-            "kpi"
+            "donut",
+
+          visualValue:
+            "46%"
         }
 
       ],
@@ -163,64 +183,84 @@ document.addEventListener(
           id: 1,
 
           prompt:
-            "1 Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            "When a new customer signs up, create their onboarding tasks and notify the account owner.",
 
           title:
-            "Workflow result 1",
+            "Onboarding started",
 
           copy:
-            "1 Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            `The new account has been assigned a checklist.<br>
+            <strong>Tasks created:</strong> 4<br>
+            <strong>Owner notified:</strong> Account team`,
 
           visual:
-            "line"
+            "kpi",
+
+          visualValue:
+            "4",
+
+          visualLabel:
+            "Tasks"
         },
+
 
         {
           id: 2,
 
           prompt:
-            "2 Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            "When a support request becomes urgent, assign it to the escalation queue and alert the team.",
 
           title:
-            "Workflow result 2",
+            "Escalation triggered",
 
           copy:
-            "2 Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            `The request was moved into the priority support flow.<br>
+            <strong>Queue:</strong> Urgent support<br>
+            <strong>Team notified:</strong> Yes`,
 
           visual:
             "bars"
         },
 
+
         {
           id: 3,
 
           prompt:
-            "3 Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            "Create a follow-up task when a customer has not replied within three business days.",
 
           title:
-            "Workflow result 3",
+            "Follow-up scheduled",
 
           copy:
-            "3 Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            `Inactive conversations were checked and the next action was created.<br>
+            <strong>Accounts matched:</strong> 7<br>
+            <strong>Tasks created:</strong> 7`,
 
           visual:
-            "kpi"
+            "donut",
+
+          visualValue:
+            "7"
         },
+
 
         {
           id: 4,
 
           prompt:
-            "4 Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            "After a deal is marked as won, prepare the handover and notify the delivery team.",
 
           title:
-            "Workflow result 4",
+            "Handover prepared",
 
           copy:
-            "4 Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            `The completed deal triggered the delivery handover process.<br>
+            <strong>Steps completed:</strong> 3 of 3<br>
+            <strong>Delivery team:</strong> Notified`,
 
           visual:
-            "donut"
+            "line"
         }
 
       ],
@@ -232,64 +272,84 @@ document.addEventListener(
           id: 1,
 
           prompt:
-            "1 Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            "Check the latest order and delivery status for this customer.",
 
           title:
-            "API result 1",
+            "Order status retrieved",
 
           copy:
-            "1 Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-
-          visual:
-            "donut"
-        },
-
-        {
-          id: 2,
-
-          prompt:
-            "2 Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-
-          title:
-            "API result 2",
-
-          copy:
-            "2 Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            `The order has shipped and is due tomorrow.<br>
+            <strong>Order:</strong> #10482<br>
+            <strong>Delivery:</strong> In transit`,
 
           visual:
             "line"
         },
 
+
+        {
+          id: 2,
+
+          prompt:
+            "Get the latest invoice status and outstanding balance for this customer.",
+
+          title:
+            "Invoice status retrieved",
+
+          copy:
+            `Billing information was retrieved from the connected finance service.<br>
+            <strong>Invoice:</strong> #INV-2481<br>
+            <strong>Balance:</strong> €1,240 outstanding`,
+
+          visual:
+            "kpi",
+
+          visualValue:
+            "€1.2k",
+
+          visualLabel:
+            "Outstanding"
+        },
+
+
         {
           id: 3,
 
           prompt:
-            "3 Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            "Check the current service availability and recent incidents for this customer's region.",
 
           title:
-            "API result 3",
+            "Service status checked",
 
           copy:
-            "3 Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            `Live availability data was retrieved for the selected region.<br>
+            <strong>Availability:</strong> 99.98%<br>
+            <strong>Open incidents:</strong> 1`,
 
           visual:
-            "bars"
+            "donut",
+
+          visualValue:
+            "99.98%"
         },
+
 
         {
           id: 4,
 
           prompt:
-            "4 Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            "Retrieve the customer's latest product usage and API activity.",
 
           title:
-            "API result 4",
+            "Usage data retrieved",
 
           copy:
-            "4 Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            `Recent activity was collected from the connected usage service.<br>
+            <strong>Requests:</strong> 18,420 this month<br>
+            <strong>Change:</strong> +12% month over month`,
 
           visual:
-            "kpi"
+            "bars"
         }
 
       ]
@@ -407,7 +467,9 @@ document.addEventListener(
     }
 
 
-    function createDonut() {
+    function createDonut(
+      displayValue = "68%"
+    ) {
 
       const wrapper =
         document.createElement(
@@ -430,7 +492,7 @@ document.addEventListener(
 
 
       value.textContent =
-        "68%";
+        displayValue;
 
 
       wrapper.appendChild(
@@ -515,7 +577,10 @@ document.addEventListener(
     }
 
 
-    function createKpi() {
+    function createKpi(
+      displayValue = "84%",
+      label = ""
+    ) {
 
       const wrapper =
         document.createElement(
@@ -527,15 +592,46 @@ document.addEventListener(
         "chart-kpi";
 
 
-      wrapper.innerHTML = `
-        <div class="chart-kpi-value">
-          84%
-        </div>
+      const value =
+        document.createElement(
+          "div"
+        );
 
-        <div class="chart-kpi-label">
-          Lorem ipsum
-        </div>
-      `;
+
+      value.className =
+        "chart-kpi-value";
+
+
+      value.textContent =
+        displayValue;
+
+
+      wrapper.appendChild(
+        value
+      );
+
+
+      if (label) {
+
+        const labelElement =
+          document.createElement(
+            "div"
+          );
+
+
+        labelElement.className =
+          "chart-kpi-label";
+
+
+        labelElement.textContent =
+          label;
+
+
+        wrapper.appendChild(
+          labelElement
+        );
+
+      }
 
 
       return wrapper;
@@ -544,7 +640,7 @@ document.addEventListener(
 
 
     function renderVisual(
-      type
+      variation
     ) {
 
       resultVisual.innerHTML =
@@ -555,7 +651,7 @@ document.addEventListener(
 
 
       switch (
-        type
+        variation.visual
       ) {
 
         case "bars":
@@ -569,7 +665,9 @@ document.addEventListener(
         case "donut":
 
           visual =
-            createDonut();
+            createDonut(
+              variation.visualValue
+            );
 
           break;
 
@@ -585,7 +683,10 @@ document.addEventListener(
         case "kpi":
 
           visual =
-            createKpi();
+            createKpi(
+              variation.visualValue,
+              variation.visualLabel
+            );
 
           break;
 
@@ -631,7 +732,7 @@ document.addEventListener(
 
           const interval =
             Math.max(
-              12,
+              10,
               duration /
               text.length
             );
@@ -700,7 +801,7 @@ document.addEventListener(
 
 
     /* ============================================================
-       FLOW POINTS
+       FLOW
        ============================================================ */
 
     function point(
@@ -760,10 +861,6 @@ document.addEventListener(
     }
 
 
-    /* ============================================================
-       CONNECTION PATH
-       ============================================================ */
-
     function makePath(
       start,
       end,
@@ -817,10 +914,6 @@ document.addEventListener(
 
     }
 
-
-    /* ============================================================
-       FLOW DOT
-       ============================================================ */
 
     function animateDot(
       path,
@@ -943,10 +1036,6 @@ document.addEventListener(
     }
 
 
-    /* ============================================================
-       DRAW FLOW
-       ============================================================ */
-
     function drawFlow(
       animate = false
     ) {
@@ -974,10 +1063,6 @@ document.addEventListener(
       );
 
 
-      /*
-        AI Agent -> Ondeva
-      */
-
       const agentRight =
         point(
           agentNode,
@@ -999,10 +1084,6 @@ document.addEventListener(
           "line active"
         );
 
-
-      /*
-        Ondeva -> capabilities
-      */
 
       const ondevaRight =
         point(
@@ -1059,10 +1140,6 @@ document.addEventListener(
       }
 
 
-      /*
-        Selected capability -> Result
-      */
-
       const selectedRight =
         point(
           selectedCapability,
@@ -1117,12 +1194,12 @@ document.addEventListener(
         variation.title;
 
 
-      resultCopy.textContent =
+      resultCopy.innerHTML =
         variation.copy;
 
 
       renderVisual(
-        variation.visual
+        variation
       );
 
 
@@ -1134,7 +1211,7 @@ document.addEventListener(
 
 
     /* ============================================================
-       RUN
+       RUN SEQUENCE
        ============================================================ */
 
     async function runSequence() {
@@ -1343,7 +1420,8 @@ document.addEventListener(
        PROXIMITY CANVAS
        ============================================================ */
 
-    let dots = [];
+    let dots =
+      [];
 
 
     const mouse = {
@@ -1357,7 +1435,8 @@ document.addEventListener(
       height
     ) {
 
-      dots = [];
+      dots =
+        [];
 
 
       const gap =
@@ -1605,7 +1684,7 @@ document.addEventListener(
 
 
     /* ============================================================
-       CARD CLICK
+       EVENTS
        ============================================================ */
 
     capabilityButtons.forEach(

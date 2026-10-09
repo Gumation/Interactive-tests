@@ -199,7 +199,7 @@ to { background-position: center, -130% 0; }
 .od-flow .od-icon--agent .agent-symbol { color: inherit; font-size: 76px; line-height: 1; }
 .od-flow .od-agent h2 { margin-bottom: 13px; color: var(--od-purple); font-size: 52px; font-weight: 700; line-height: 1.12; }
 .od-flow .od-agent p { font-size: 25px; line-height: 1.4; color: var(--od-muted); }
-.od-flow .od-arrow { display: grid; place-items: center; height: 60px; color: currentColor; }
+.od-flow .od-arrow { display: grid; place-items: center; height: 60px; color: #4A43C2; }
 .od-flow .od-arrow svg { width: 32px; height: 40px; fill: none; stroke: currentColor; stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; }
 .od-flow .od-platform {
   gap: 56px;

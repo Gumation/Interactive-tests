@@ -338,7 +338,7 @@ to { background-position: center, -130% 0; }
   .trust-section .trust-copy h2 { font-size: 28px; }
   .trust-section .trust-content { grid-template-columns: 1fr; gap: 32px; margin-top: 32px; }
   .trust-section .trust-proofs { max-width: none; }
-  .trust-section .trust-client { grid-template-columns: 80px minmax(0, 1fr); gap: 24px; }
+  .trust-section .trust-client { grid-template-columns: 80px minmax(0, 1fr); gap: 32px; }
 }
 @media (max-width: 560px) {
   .trust-section { padding: 32px 24px; }

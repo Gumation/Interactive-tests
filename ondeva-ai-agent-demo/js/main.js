@@ -1948,3 +1948,46 @@ document.addEventListener("DOMContentLoaded", () => {
   );
 
 });
+
+/* ============================================================
+   SECTION 02 — AI AGENT / ONDEVA: ENTRADA AUTOMÁTICA
+   Adição independente. Código original acima preservado.
+   Seleciona somente [data-od-flow]; não utiliza .capability.
+   ============================================================ */
+
+/* Automatic, one-time reveal. No clicks, hover effects, or dependencies. */
+(() => {
+  'use strict';
+  function initAgentFlow() {
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const readTiming = (value, fallback) => {
+    if (value === undefined || value.trim() === '') return fallback;
+    const number = Number(value);
+    return Number.isFinite(number) && number >= 0 ? number : fallback;
+  };
+
+  document.querySelectorAll('[data-od-flow]').forEach((flow) => {
+    if (reducedMotion.matches || flow.classList.contains('od-animated')) return;
+    const step = readTiming(flow.dataset.stepMs, 700);
+    const start = readTiming(flow.dataset.startMs, 180);
+    const cards = flow.querySelectorAll('[data-od-reveal]');
+    const connectors = flow.querySelectorAll('[data-od-connector]');
+    cards.forEach((card, index) => card.style.setProperty('--od-delay', `${start + index * step}ms`));
+    connectors.forEach((arrow, index) => arrow.style.setProperty('--od-delay', `${start + index * step + step * 0.65}ms`));
+    flow.classList.add('od-animated');
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => flow.classList.add('od-playing'));
+    });
+    // Respond if the user changes their motion preference while the page is open.
+    reducedMotion.addEventListener('change', (event) => {
+      if (event.matches) flow.classList.remove('od-animated', 'od-playing');
+    });
+  });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAgentFlow, { once: true });
+  } else {
+    initAgentFlow();
+  }
+})();

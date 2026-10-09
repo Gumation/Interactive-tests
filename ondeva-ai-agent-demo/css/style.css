@@ -1389,3 +1389,134 @@ button {
   }
 
 }
+
+/* ============================================================
+   SECTION 02 — AI AGENT / ONDEVA: CARDS AUTOMÁTICOS
+   Adição independente. Código original acima preservado.
+   Reutiliza reset, fonte, .page e .capability-copy existentes.
+   ============================================================ */
+
+.od-flow .od-icons { position: absolute; }
+
+/* Component styles are scoped to od- to avoid collisions with your site. */
+.od-flow .od-icons { position: absolute; width: 0; height: 0; overflow: hidden; }
+.od-flow {
+  --od-purple: #3b0a9b;
+  --od-ink: #0a0927;
+  --od-muted: #565b70;
+  --od-duration: 560ms;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1080px;
+  margin: 80px auto 0;
+  padding: 32px 40px;
+  color: var(--od-ink);
+}
+.od-flow h2, .od-flow h3, .od-flow p { margin: 0; }
+.od-flow .od-card {
+  display: flex;
+  align-items: center;
+  border: 1.5px solid #e4e4ed;
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: 0 6px 10px rgb(24 15 48 / 8%);
+}
+.od-flow .od-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 124px;
+  width: 124px;
+  height: 124px;
+  border-radius: 50%;
+  color: var(--od-purple);
+  background: #eee9ff;
+}
+.od-flow .od-icon svg { width: 66px; height: 66px; fill: none; stroke: currentColor; stroke-width: 3.6; stroke-linecap: round; stroke-linejoin: round; }
+.od-flow .od-agent { gap: 88px; min-height: 198px; padding: 30px 58px; border-color: #ded3ff; background: linear-gradient(115deg, #faf8ff, #f8f6fd); }
+.od-flow .od-icon--agent { flex-basis: 134px; width: 134px; height: 134px; background: #e9e2fb; }
+.od-flow .od-icon--agent svg { width: 76px; height: 76px; }
+.od-flow .od-agent h2 { margin-bottom: 13px; color: var(--od-purple); font-size: 52px; font-weight: 700; line-height: 1.12; }
+.od-flow .od-agent p { font-size: 25px; line-height: 1.4; color: var(--od-muted); }
+.od-flow .od-arrow { display: grid; place-items: center; height: 60px; color: var(--od-muted); }
+.od-flow .od-arrow svg { width: 32px; height: 40px; fill: none; stroke: currentColor; stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; }
+.od-flow .od-platform { gap: 56px; min-height: 180px; padding: 36px 68px; color: #fff; border: 0; background: linear-gradient(120deg, #4d25c5, #3c1d9f); }
+.od-flow .od-brand { display: flex; align-items: center; gap: 27px; flex: 1 1 50%; min-width: 0; }
+.od-flow .od-brand-mark { width: 118px; height: 90px; flex-shrink: 0; fill: currentColor; }
+.od-flow .od-brand-name { font-size: 76px; font-weight: 500; font-style: italic; line-height: 1; letter-spacing: -3px; }
+.od-flow .od-platform-copy { flex: 1 1 50%; min-height: 102px; padding-left: 56px; border-left: 1px solid rgb(255 255 255 / 55%); display: flex; flex-direction: column; justify-content: center; font-size: 25px; line-height: 1.45; letter-spacing: -0.6px; }
+.od-flow .od-features { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 18px; }
+.od-flow .od-feature { gap: 40px; min-height: 176px; padding: 24px 32px; }
+.od-flow .od-feature h3 { margin-bottom: 15px; font-size: 30px; font-weight: 700; line-height: 1.15; letter-spacing: -0.8px; }
+.od-flow .od-feature p { font-size: 24px; line-height: 1.4; color: var(--od-muted); letter-spacing: -0.35px; }
+.od-flow .od-automation { grid-column: 1 / -1; min-height: 112px; padding: 8px 50px; gap: 56px; }
+.od-flow .od-automation .od-icon { flex-basis: 92px; width: 92px; height: 92px; }
+.od-flow .od-automation .od-icon svg { width: 58px; height: 58px; }
+.od-flow .od-automation .od-copy { display: flex; align-items: center; gap: 36px; }
+.od-flow .od-automation h3 { margin: 0; }
+.od-flow .od-automation p { font-size: 21px; }
+
+/* Default is visible: if JavaScript is unavailable, all content remains readable. */
+.od-flow.od-animated [data-od-reveal],
+.od-flow.od-animated [data-od-connector] { opacity: 0; }
+.od-flow.od-playing [data-od-reveal] {
+  animation: od-card-in var(--od-duration) cubic-bezier(.2,.7,.2,1) var(--od-delay, 0ms) both;
+}
+.od-flow.od-playing [data-od-connector] {
+  animation: od-arrow-in 300ms ease-out var(--od-delay, 0ms) both;
+}
+@keyframes od-card-in { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes od-arrow-in { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+
+@media (max-width: 1000px) {
+  .od-flow { padding: 28px; }
+  .od-flow .od-agent { gap: 48px; padding: 26px 40px; }
+  .od-flow .od-agent h2 { font-size: 44px; }
+  .od-flow .od-agent p { font-size: 22px; }
+  .od-flow .od-platform { gap: 30px; padding: 30px 40px; }
+  .od-flow .od-brand-mark { width: 86px; height: 66px; }
+  .od-flow .od-brand-name { font-size: 60px; }
+  .od-flow .od-platform-copy { font-size: 22px; padding-left: 30px; }
+  .od-flow .od-feature { gap: 26px; padding: 22px; }
+  .od-flow .od-icon { flex-basis: 96px; width: 96px; height: 96px; }
+  .od-flow .od-icon svg { width: 56px; height: 56px; }
+  .od-flow .od-feature h3 { font-size: 25px; }
+  .od-flow .od-feature p { font-size: 20px; }
+  .od-flow .od-automation { gap: 30px; padding: 12px 32px; }
+  .od-flow .od-automation .od-copy { gap: 30px; }
+  .od-flow .od-automation p { font-size: 20px; }
+}
+@media (max-width: 860px) {
+  .od-flow { padding: 20px; }
+  .od-flow .od-agent { min-height: 150px; gap: 24px; padding: 24px; }
+  .od-flow .od-icon--agent { flex-basis: 96px; width: 96px; height: 96px; }
+  .od-flow .od-icon--agent svg { width: 62px; height: 62px; }
+  .od-flow .od-agent h2 { font-size: 36px; }
+  .od-flow .od-agent p { font-size: 18px; }
+  .od-flow .od-arrow { height: 48px; }
+  .od-flow .od-platform { flex-direction: column; gap: 24px; padding: 30px; }
+  .od-flow .od-brand { flex: auto; gap: 24px; }
+  .od-flow .od-platform-copy { flex: auto; width: 100%; min-height: auto; text-align: center; padding: 20px 0 0; border-left: 0; border-top: 1px solid rgb(255 255 255 / 45%); font-size: 20px; }
+  .od-flow .od-features { grid-template-columns: 1fr; }
+  .od-flow .od-feature { min-height: 140px; gap: 28px; padding: 22px 26px; }
+  .od-flow .od-feature h3 { margin-bottom: 9px; }
+  .od-flow .od-feature p { font-size: 19px; }
+  .od-flow .od-automation { grid-column: auto; }
+  .od-flow .od-automation .od-copy { display: block; }
+  .od-flow .od-automation h3 { margin-bottom: 9px; }
+  .od-flow .od-desktop-break { display: none; }
+}
+@media (max-width: 400px) {
+  .od-flow { padding: 16px; }
+  .od-flow .od-agent, .od-flow .od-feature { padding: 20px 16px; gap: 18px; }
+  .od-flow .od-icon, .od-flow .od-icon--agent, .od-flow .od-automation .od-icon { flex-basis: 76px; width: 76px; height: 76px; }
+  .od-flow .od-icon svg, .od-flow .od-icon--agent svg { width: 48px; height: 48px; }
+  .od-flow .od-agent h2 { font-size: 30px; }
+  .od-flow .od-agent p, .od-flow .od-feature p { font-size: 17px; }
+  .od-flow .od-feature h3 { font-size: 23px; }
+  .od-flow .od-brand-mark { width: 70px; height: 54px; }
+  .od-flow .od-brand-name { font-size: 48px; }
+  .od-flow .od-brand { gap: 18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .od-flow.od-animated [data-od-reveal], .od-flow.od-animated [data-od-connector] { opacity: 1; animation: none; transform: none; }
+}

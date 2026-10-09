@@ -216,6 +216,90 @@
 
   </main>
 
+  <!-- ============================================================
+     SECTION 02 — AI AGENT / ONDEVA: CARDS AUTOMÁTICOS
+     Cole dentro de <main class="page">, depois da section existente.
+     ============================================================ -->
+  <section class="od-flow" data-od-flow data-step-ms="700" data-start-ms="180" aria-label="How Ondeva connects AI agents and operations">
+  <svg class="od-icons" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <symbol id="od-robot" viewBox="0 0 64 64">
+        <path d="M32 15V7M8 30H4v13h4M56 30h4v13h-4"/>
+        <rect x="9" y="18" width="46" height="36" rx="10"/>
+        <circle cx="32" cy="6" r="3" fill="currentColor" stroke="none"/>
+        <circle cx="23" cy="34" r="4" fill="currentColor" stroke="none"/>
+        <circle cx="41" cy="34" r="4" fill="currentColor" stroke="none"/>
+        <path d="M27 44q5 5 10 0"/>
+      </symbol>
+      <symbol id="od-database" viewBox="0 0 64 64">
+        <ellipse cx="32" cy="13" rx="22" ry="9"/>
+        <path d="M10 13v37c0 5 10 9 22 9s22-4 22-9V13M10 25c0 5 10 9 22 9s22-4 22-9M10 38c0 5 10 9 22 9s22-4 22-9"/>
+      </symbol>
+      <symbol id="od-workflow" viewBox="0 0 64 64">
+        <rect x="26" y="4" width="12" height="12" rx="2"/>
+        <rect x="7" y="47" width="12" height="12" rx="3"/>
+        <rect x="45" y="47" width="12" height="12" rx="3"/>
+        <path d="M32 16v15M13 47V38a7 7 0 0 1 7-7h24a7 7 0 0 1 7 7v9"/>
+      </symbol>
+      <symbol id="od-interface" viewBox="0 0 64 64">
+        <rect x="8" y="8" width="48" height="48" rx="4"/>
+        <path d="M8 20h48"/>
+        <rect x="16" y="29" width="8" height="8" rx="1" fill="currentColor" stroke="none"/>
+        <rect x="16" y="42" width="8" height="8" rx="1" fill="currentColor" stroke="none"/>
+      </symbol>
+      <symbol id="od-code" viewBox="0 0 64 64">
+        <path d="m18 20-13 12 13 12M46 20l13 12-13 12M38 8 26 56"/>
+      </symbol>
+      <symbol id="od-bolt" viewBox="0 0 64 64">
+        <path d="m36 5-23 32h18l-3 22 23-32H33Z"/>
+      </symbol>
+    </defs>
+  </svg>
+
+    <article class="od-card od-agent" data-od-reveal>
+      <span class="od-icon od-icon--agent" aria-hidden="true"><svg><use href="#od-robot"/></svg></span>
+      <div class="capability-copy od-copy">
+        <h2>AI Agent</h2>
+        <p>Understands intent and makes intelligent decisions</p>
+      </div>
+    </article>
+
+    <div class="od-arrow" data-od-connector aria-hidden="true"><svg viewBox="0 0 32 40"><path d="M16 3v31M6 24l10 11 10-11"/></svg></div>
+
+    <article class="od-card od-platform" data-od-reveal aria-label="Ondeva: Orchestrates, reasons, and coordinates operations">
+      <div class="od-brand" aria-hidden="true">
+        <svg class="od-brand-mark" viewBox="0 0 94 72"><rect x="0" y="0" width="39" height="72" rx="6"/><path d="M67 0h20a6 6 0 0 1 6 6v60a6 6 0 0 1-6 6H58a6 6 0 0 1-6-6V36a6 6 0 0 1 6-6h3V6a6 6 0 0 1 6-6Z"/></svg>
+        <span class="od-brand-name">ondeva</span>
+      </div>
+      <p class="od-platform-copy" aria-hidden="true">Orchestrates, reasons,<br class="od-desktop-break"> and coordinates operations</p>
+    </article>
+
+    <div class="od-arrow" data-od-connector aria-hidden="true"><svg viewBox="0 0 32 40"><path d="M16 3v31M6 24l10 11 10-11"/></svg></div>
+
+    <div class="od-features">
+      <article class="od-card od-feature" data-od-reveal>
+        <span class="od-icon" aria-hidden="true"><svg><use href="#od-database"/></svg></span>
+        <div class="capability-copy od-copy"><h3>Databases</h3><p>Store and manage<br class="od-desktop-break"> structured data</p></div>
+      </article>
+      <article class="od-card od-feature" data-od-reveal>
+        <span class="od-icon" aria-hidden="true"><svg><use href="#od-workflow"/></svg></span>
+        <div class="capability-copy od-copy"><h3>Workflows</h3><p>Define and automate<br class="od-desktop-break"> business processes</p></div>
+      </article>
+      <article class="od-card od-feature" data-od-reveal>
+        <span class="od-icon" aria-hidden="true"><svg><use href="#od-interface"/></svg></span>
+        <div class="capability-copy od-copy"><h3>Interfaces</h3><p>Deliver seamless<br class="od-desktop-break"> user experiences</p></div>
+      </article>
+      <article class="od-card od-feature" data-od-reveal>
+        <span class="od-icon" aria-hidden="true"><svg><use href="#od-code"/></svg></span>
+        <div class="capability-copy od-copy"><h3>APIs</h3><p>Connect and extend<br class="od-desktop-break"> with external services</p></div>
+      </article>
+      <article class="od-card od-feature od-automation" data-od-reveal>
+        <span class="od-icon" aria-hidden="true"><svg><use href="#od-bolt"/></svg></span>
+        <div class="capability-copy od-copy"><h3>Automations</h3><p>Trigger actions and streamline repetitive tasks</p></div>
+      </article>
+    </div>
+  </section>
+
   <script src="./js/main.js"></script>
 
 </body>

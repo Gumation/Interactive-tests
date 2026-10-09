@@ -77,7 +77,7 @@ function odObserveSectionThird(section, onEnter) {
     frame = null;
     if (finished) return;
     const rect = section.getBoundingClientRect();
-    const triggerPoint = rect.top + rect.height / 3;
+    const triggerPoint = rect.top + rect.height / 4;
     if (triggerPoint <= window.innerHeight / 2) {
       cleanup();
       onEnter();

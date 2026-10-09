@@ -115,6 +115,12 @@ to { background-position: center, -130% 0; }
 }
 
 /* SECTION 01 — Result titles, copy, and visual content. */
+/* SECTION 01 — Keep CSS effects paused until the section reaches the viewport center. */
+.experience:not(.experience-started) .result-loading,
+.experience:not(.experience-started) .result-loading::before,
+.experience:not(.experience-started) .result-loading::after,
+.experience:not(.experience-started) .prompt-cursor { animation-play-state: paused; }
+
 .result-content { position: relative; z-index: 2; height: 100%; padding: 24px; display: flex; flex-direction: column; opacity: 1; transition: opacity 250ms ease; }
 
 .result-card.is-loading .result-content { opacity: 0; }

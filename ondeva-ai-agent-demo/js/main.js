@@ -1,4 +1,61 @@
 /* ============================================================
+   SHARED SCROLL TRIGGER — SECTIONS 01 AND 02 IN THE HTML
+   Start once when the section intersects the viewport center line.
+   Pixel margins keep the trigger correct across viewport aspect ratios.
+   ============================================================ */
+function odObserveSectionCenter(section, onEnter) {
+  if (!section) return;
+  let observer = null;
+  let triggered = false;
+  let resizeFrame = null;
+
+  function finish() {
+    if (triggered) return;
+    triggered = true;
+    if (observer) observer.disconnect();
+    if (resizeFrame !== null) cancelAnimationFrame(resizeFrame);
+    window.removeEventListener('resize', onResize);
+    window.removeEventListener('scroll', checkCenter);
+    onEnter();
+  }
+
+  function checkCenter() {
+    const rect = section.getBoundingClientRect();
+    const middle = window.innerHeight / 2;
+    if (rect.top <= middle && rect.bottom >= middle) finish();
+  }
+
+  function observe() {
+    if (triggered) return;
+    checkCenter();
+    if (triggered || !('IntersectionObserver' in window)) return;
+    if (observer) observer.disconnect();
+    const height = window.innerHeight;
+    const topMargin = Math.floor(height / 2);
+    const bottomMargin = Math.max(0, height - topMargin - 1);
+    observer = new IntersectionObserver((entries) => {
+      if (entries.some(entry => entry.isIntersecting)) finish();
+    }, {
+      rootMargin: `-${topMargin}px 0px -${bottomMargin}px 0px`,
+      threshold: 0,
+    });
+    observer.observe(section);
+  }
+
+  function onResize() {
+    if (triggered) return;
+    if (resizeFrame !== null) cancelAnimationFrame(resizeFrame);
+    resizeFrame = requestAnimationFrame(observe);
+  }
+
+  window.addEventListener('resize', onResize, { passive: true });
+  if (!('IntersectionObserver' in window)) {
+    window.addEventListener('scroll', checkCenter, { passive: true });
+  }
+  observe();
+}
+
+/* ============================================================
    SECTION 01 JS — INTERACTIVE AI AGENT DEMO
    Capability selection, prompt typing, result rendering, SVG paths, and canvas effects.
    ============================================================ */
@@ -88,6 +145,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+
+  // SECTION 01 — Queue selections until the section reaches the viewport center.
+  let experienceStarted = false;
 
   let selectedCapability = null;
 
@@ -2922,7 +2982,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (
 
-      !selectedCapability
+      !experienceStarted || !selectedCapability
 
     ) {
 
@@ -3726,11 +3786,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-    requestAnimationFrame(
-
-      drawDots
-
-    );
+    // Draw the initial canvas statically; animate only after the center trigger.
+    if (experienceStarted) requestAnimationFrame(drawDots);
 
 
 
@@ -3855,50 +3912,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   resizeCanvas();
-
-
-
   drawDots();
+  resultCard.classList.remove('is-loading');
 
-
-
-  requestAnimationFrame(
-
-    () => {
-
-
-
-      const firstCapability =
-
-        capabilityButtons[0];
-
-
-
-      if (
-
-        firstCapability
-
-      ) {
-
-
-
-        selectCapability(
-
-          firstCapability
-
-        );
-
-
-
-      }
-
-
-
-    }
-
-  );
-
-
+  // SECTION 01 — Begin the prompt, flow dots, and loading effect at the viewport center.
+  odObserveSectionCenter(experience, () => {
+    experienceStarted = true;
+    experience.classList.add('experience-started');
+    drawDots();
+    const initialCapability = selectedCapability || capabilityButtons[0];
+    if (initialCapability) selectCapability(initialCapability);
+  });
 
 });
 
@@ -3989,7 +4013,7 @@ document.addEventListener("DOMContentLoaded", () => {
 /* ============================================================
    SECTION 03 JS — TRUST METRIC REVEALS AND CLIENT ROTATION
    Metrics: 0.5s extra delay. Clients: 3s hold plus a 600ms fade.
-   Reveals start on visibility; client rotation pauses offscreen and in hidden tabs.
+   Reveals start at the viewport center; client rotation pauses offscreen and in hidden tabs.
    ============================================================ */
 
 (() => {
@@ -4018,6 +4042,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const CLIENT_HOLD_MS = 3000;
 
       const CLIENT_FADE_MS = 600;
+
+      let centerReached = false;
 
       let started = false;
 
@@ -4089,7 +4115,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // SECTION 03 — Rotate through clients only while the section and browser tab are visible.
       function resumeClients() {
 
-        if (!started || !visible || document.hidden || reducedMotion.matches || cards.length < 2 || clientTimer !== null) return;
+        if (!centerReached || !started || !visible || document.hidden || reducedMotion.matches || cards.length < 2 || clientTimer !== null) return;
 
         clientDeadline = performance.now() + clientRemaining;
 
@@ -4198,34 +4224,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-      // SECTION 03 — Observe viewport entry and exit to start reveals and pause rotation.
+      // TRUST SECTION — Track visibility to pause and resume client rotation.
       if ('IntersectionObserver' in window) {
-
         const observer = new IntersectionObserver((entries) => {
-
           visible = entries.some((entry) => entry.isIntersecting);
-
-          if (visible) {
-
-            if (!reducedMotion.matches) start();
-
-            resumeClients();
-
-          } else pauseClients();
-
+          if (visible) resumeClients();
+          else pauseClients();
         }, { rootMargin: '0px 0px -64px 0px', threshold: 0 });
-
         observer.observe(section);
-
       } else {
-
         visible = true;
-
-        if (!reducedMotion.matches) start();
-
-        resumeClients();
-
       }
+
+      // TRUST SECTION — Start reveals and client rotation once at the viewport center.
+      odObserveSectionCenter(section, () => {
+        centerReached = true;
+        visible = true;
+        if (!reducedMotion.matches) start();
+        resumeClients();
+      });
 
       // SECTION 03 — Pause rotation when the browser tab is hidden.
       document.addEventListener('visibilitychange', () => {

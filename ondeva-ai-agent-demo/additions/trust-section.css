@@ -1,67 +1,80 @@
-
 /* ============================================================
-   SECTION 03 — TRUSTED BY COMPANIES & TEAMS
-   O degradê pertence à section inteira, incluindo todo o padding.
+   SECTION 03 — TRUST, CLIENTES E POWERED BY ONDEVA
+   O degradê cobre a section inteira e seu padding.
    ============================================================ */
 .trust-section {
-  width: 100%;
-  margin-top: 80px;
-  padding: 48px 40px;
-  color: #fff;
-  background: linear-gradient(115deg, #3e207c 0%, #4a43c2 100%);
+  width: 100%; margin-top: 80px; padding: 48px 40px;
+  color: #fff; background: linear-gradient(115deg, #3e207c 0%, #4a43c2 100%);
 }
 .trust-section .trust-inner { width: 100%; max-width: 1120px; margin: 0 auto; }
 .trust-section h2, .trust-section h3, .trust-section p { margin: 0; }
 .trust-section .trust-copy h2 { font-size: 32px; font-weight: 700; line-height: 1.25; }
 .trust-section .trust-copy p { max-width: 900px; margin-top: 16px; font-size: 18px; font-weight: 400; line-height: 1.6; }
-.trust-section .trust-proofs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; margin-top: 32px; align-items: center; }
+.trust-section .trust-content { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); align-items: center; gap: 48px; margin-top: 40px; }
+.trust-section .trust-proofs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: center; gap: 28px 24px; max-width: 520px; }
 .trust-section .trust-proof { min-width: 0; }
-.trust-section .trust-proof + .trust-proof { border-left: 1px solid rgb(255 255 255 / 24%); padding-left: 32px; }
+.trust-section .trust-proof:nth-child(2) { border-left: 1px solid rgb(255 255 255 / 24%); padding-left: 24px; }
 .trust-section .trust-proof h3 { font-size: 24px; font-weight: 700; line-height: 1.3; }
-.trust-section .trust-count { font-size: 64px; font-weight: 700; line-height: 1; letter-spacing: -2px; font-variant-numeric: tabular-nums; }
-.trust-section .trust-proof--metric p { margin-top: 8px; font-size: 18px; font-weight: 400; line-height: 1.5; }
-.trust-section .trust-logos { display: flex; align-items: center; flex-wrap: wrap; gap: 24px; margin-top: 32px; padding-top: 24px; border-top: 1px solid rgb(255 255 255 / 24%); }
-.trust-section .trust-logo { display: grid; place-items: center; flex: 0 0 104px; width: 104px; height: 104px; padding: 12px; border-radius: 50%; overflow: hidden; background: #fff; box-shadow: 0 4px 8px rgb(0 0 0 / 15%); }
-.trust-section .trust-logo img { display: block; width: 80px; height: 80px; object-fit: contain; }
+.trust-section .trust-proof--metric { grid-column: 1 / -1; display: flex; align-items: center; gap: 24px; padding-top: 24px; border-top: 1px solid rgb(255 255 255 / 24%); }
+.trust-section .trust-count { flex: 0 0 auto; min-width: 112px; font-size: 64px; font-weight: 700; line-height: 1; letter-spacing: -2px; font-variant-numeric: tabular-nums; }
+.trust-section .trust-proof--metric p { max-width: 230px; font-size: 18px; font-weight: 400; line-height: 1.5; }
+
+/* Os cards compartilham a mesma célula para a troca não mover o layout. */
+.trust-section .trust-clients { display: grid; min-width: 0; }
+.trust-section .trust-client { display: grid; grid-template-columns: 80px minmax(0, 1fr); align-items: center; gap: 24px; padding: 24px; border-radius: 16px; color: #566071; background: #fff; box-shadow: 0 12px 32px rgb(23 10 56 / 16%); }
+.trust-section .trust-client:not(.is-active) { display: none; }
+.trust-section .trust-client-logo { display: block; width: 80px; height: 80px; object-fit: contain; }
+.trust-section .trust-client-text { min-width: 0; }
+.trust-section .trust-client h3 { color: #4a43c2; font-size: 24px; font-weight: 700; line-height: 1.3; overflow-wrap: anywhere; }
+.trust-section .trust-client p { margin-top: 12px; font-size: 18px; font-weight: 400; line-height: 1.5; }
+.trust-section .trust-client p span { display: block; }
+.trust-section .trust-clients.is-carousel-ready .trust-client { display: grid; grid-area: 1 / 1; opacity: 0; transform: translateY(8px); pointer-events: none; transition: opacity 600ms ease, transform 600ms ease; }
+.trust-section .trust-clients.is-carousel-ready .trust-client.is-active { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.trust-section .trust-powered { display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 36px; padding-top: 24px; border-top: 1px solid rgb(255 255 255 / 24%); }
+.trust-section .trust-powered span { font-size: 14px; font-weight: 400; line-height: 1.5; }
+.trust-section .trust-powered img { display: block; width: 126px; height: auto; }
 .trust-section .trust-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 
-/* Sem JavaScript, todos os elementos permanecem visíveis. */
+/* Sem JavaScript, a copy, os destaques e o primeiro cliente ficam visíveis. */
 .trust-section.trust-ready:not(.trust-started) [data-trust-reveal] { opacity: 0; transform: translateY(14px); }
 .trust-section.trust-started [data-trust-reveal] { animation: trust-enter 560ms cubic-bezier(.2,.7,.2,1) var(--trust-delay, 0ms) both; }
 @keyframes trust-enter {
   from { opacity: 0; transform: translateY(14px); }
   to { opacity: 1; transform: translateY(0); }
 }
+@media (max-width: 1000px) {
+  .trust-section .trust-content { grid-template-columns: 1fr 1fr; gap: 32px; }
+  .trust-section .trust-client { grid-template-columns: 1fr; gap: 16px; }
+  .trust-section .trust-proof h3 { font-size: 22px; }
+}
 @media (max-width: 760px) {
   .trust-section { padding: 40px 24px; }
   .trust-section .trust-copy h2 { font-size: 28px; }
-  .trust-section .trust-proofs { gap: 24px; }
-  .trust-section .trust-proof + .trust-proof { padding-left: 24px; }
-  .trust-section .trust-proof h3 { font-size: 22px; }
-  .trust-section .trust-count { font-size: 56px; }
+  .trust-section .trust-content { grid-template-columns: 1fr; gap: 32px; margin-top: 32px; }
+  .trust-section .trust-proofs { max-width: none; }
+  .trust-section .trust-client { grid-template-columns: 80px minmax(0, 1fr); gap: 24px; }
 }
 @media (max-width: 560px) {
   .trust-section { padding: 32px 24px; }
   .trust-section .trust-copy h2 { font-size: 26px; }
-  .trust-section .trust-proofs { grid-template-columns: 1fr 1fr; gap: 24px 16px; }
-  .trust-section .trust-proof + .trust-proof { padding-left: 16px; }
+  .trust-section .trust-proofs { gap: 24px 16px; }
+  .trust-section .trust-proof:nth-child(2) { padding-left: 16px; }
   .trust-section .trust-proof h3 { font-size: 20px; }
-  .trust-section .trust-proof--metric { grid-column: 1 / -1; }
-  .trust-section .trust-proof.trust-proof--metric { padding: 24px 0 0; border-left: 0; border-top: 1px solid rgb(255 255 255 / 24%); }
-  .trust-section .trust-logos { gap: 16px; }
-  .trust-section .trust-logo { flex-basis: 72px; width: 72px; height: 72px; padding: 8px; }
-  .trust-section .trust-logo img { width: 56px; height: 56px; }
+  .trust-section .trust-proof--metric { gap: 16px; }
+  .trust-section .trust-count { font-size: 56px; min-width: 90px; }
+  .trust-section .trust-client { grid-template-columns: 1fr; gap: 16px; }
+  .trust-section .trust-client h3 { font-size: 24px; }
 }
 @media (max-width: 360px) {
   .trust-section { padding: 32px 20px; }
-  .trust-section .trust-proofs { grid-template-columns: 1fr; }
-  .trust-section .trust-proof + .trust-proof { padding: 20px 0 0; border-left: 0; border-top: 1px solid rgb(255 255 255 / 24%); }
-  .trust-section .trust-proof--metric { grid-column: auto; }
-  .trust-section .trust-logos { gap: 12px; }
-  .trust-section .trust-logo { flex-basis: 64px; width: 64px; height: 64px; }
-  .trust-section .trust-logo img { width: 48px; height: 48px; }
+  .trust-section .trust-proof h3 { font-size: 18px; }
+  .trust-section .trust-count { min-width: 78px; font-size: 48px; }
+  .trust-section .trust-client { padding: 20px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .trust-section.trust-ready:not(.trust-started) [data-trust-reveal],
   .trust-section.trust-started [data-trust-reveal] { opacity: 1; transform: none; animation: none; }
+  .trust-section .trust-clients { gap: 16px; }
+  .trust-section .trust-clients .trust-client,
+  .trust-section .trust-clients.is-carousel-ready .trust-client { display: grid; grid-area: auto; opacity: 1; transform: none; transition: none; pointer-events: auto; }
 }

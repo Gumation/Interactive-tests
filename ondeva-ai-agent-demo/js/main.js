@@ -56,6 +56,49 @@ function odObserveSectionCenter(section, onEnter) {
 }
 
 /* ============================================================
+   SECTION 03 SCROLL TRIGGER — ONE THIRD OF THE SECTION HEIGHT
+   Start once when this point reaches the viewport center.
+   Recalculate after scrolling, resizing, or section height changes.
+   ============================================================ */
+function odObserveSectionThird(section, onEnter) {
+  let finished = false;
+  let frame = null;
+  let resizeObserver = null;
+
+  function cleanup() {
+    finished = true;
+    if (frame !== null) cancelAnimationFrame(frame);
+    window.removeEventListener('scroll', scheduleCheck);
+    window.removeEventListener('resize', scheduleCheck);
+    if (resizeObserver) resizeObserver.disconnect();
+  }
+
+  function check() {
+    frame = null;
+    if (finished) return;
+    const rect = section.getBoundingClientRect();
+    const triggerPoint = rect.top + rect.height / 3;
+    if (triggerPoint <= window.innerHeight / 2) {
+      cleanup();
+      onEnter();
+    }
+  }
+
+  function scheduleCheck() {
+    if (!finished && frame === null) frame = requestAnimationFrame(check);
+  }
+
+  window.addEventListener('scroll', scheduleCheck, { passive: true });
+  window.addEventListener('resize', scheduleCheck, { passive: true });
+  if ('ResizeObserver' in window) {
+    resizeObserver = new ResizeObserver(scheduleCheck);
+    resizeObserver.observe(section);
+  }
+  check();
+  return cleanup;
+}
+
+/* ============================================================
    SECTION 01 JS — INTERACTIVE AI AGENT DEMO
    Capability selection, prompt typing, result rendering, SVG paths, and canvas effects.
    ============================================================ */
@@ -3929,8 +3972,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 /* ============================================================
-   SECTION 02 JS — AUTOMATIC AI AGENT / ONDEVA CARD FLOW
-   Targets only [data-od-flow]. Cards reveal once when the page loads.
+   SECTION 03 JS — AUTOMATIC AI AGENT / ONDEVA CARD FLOW
+   Targets only [data-od-flow]. Cards reveal once after the section-specific scroll trigger.
    Timings can be configured with data-step-ms and data-start-ms in the HTML.
    ============================================================ */
 
@@ -3976,17 +4019,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
     flow.classList.add('od-animated');
 
-    requestAnimationFrame(() => {
-
-      requestAnimationFrame(() => flow.classList.add('od-playing'));
-
+    // Wait until one third of this section reaches the viewport center.
+    const stopWaiting = odObserveSectionThird(flow, () => {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          if (!reducedMotion.matches) flow.classList.add('od-playing');
+        });
+      });
     });
 
     // Respond if the user changes their motion preference while the page is open.
 
     reducedMotion.addEventListener('change', (event) => {
 
-      if (event.matches) flow.classList.remove('od-animated', 'od-playing');
+      if (event.matches) {
+        stopWaiting();
+        flow.classList.remove('od-animated', 'od-playing');
+      }
 
     });
 
@@ -4011,7 +4060,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 /* ============================================================
-   SECTION 03 JS — TRUST METRIC REVEALS AND CLIENT ROTATION
+   SECTION 02 JS — TRUST METRIC REVEALS AND CLIENT ROTATION
    Metrics: 0.5s extra delay. Clients: 3s hold plus a 600ms fade.
    Reveals start at the viewport center; client rotation pauses offscreen and in hidden tabs.
    ============================================================ */
